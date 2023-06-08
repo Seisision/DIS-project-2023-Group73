@@ -33,6 +33,30 @@ def home():
     conn = get_db_conn()
     curs = conn.cursor()
 
+    # Fetch blocks
+    curs.execute("SELECT DISTINCT number FROM Block ORDER BY number")
+    blocks = [record[0] for record in curs.fetchall()]
+
+    # Fetch professors
+    curs.execute("SELECT DISTINCT name FROM Professor ORDER BY name")
+    professor = [record[0] for record in curs.fetchall()]
+
+    # Fetch exam types
+    curs.execute("SELECT DISTINCT name FROM ExamType ORDER BY name")
+    exam_type = [record[0] for record in curs.fetchall()]   
+
+    # fetch ects
+    curs.execute("SELECT DISTINCT ECTS FROM Course ORDER BY ECTS")
+    ects = [record[0] for record in curs.fetchall()]
+
+    # fetch prerequisites
+    curs.execute("SELECT DISTINCT name FROM Course ORDER BY name")
+    prerequisites = [record[0] for record in curs.fetchall()]
+
+    # fetch duration
+    curs.execute("SELECT DISTINCT duration FROM Course ORDER BY duration")
+    duration = [record[0] for record in curs.fetchall()]
+
     # Join tables to fetch course data
     query = """
         SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS
@@ -46,15 +70,13 @@ def home():
         LEFT JOIN ExamType et ON et.id = cet.exam_type_id
         LEFT JOIN CourseBlock cb ON cb.course_id = c.id
         LEFT JOIN Block b ON b.number = cb.block_number
-        GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
     """
-
+    # Handle filtering form submission
+    # Retrieve filtering criteria from the request object
+    # Construct the SQL query with the filtering conditions
+    # Execute the query and fetch the filtered data
+    # Assign the filtered data to a variable for rendering
     if request.method == 'POST':
-        # Handle filtering form submission
-        # Retrieve filtering criteria from the request object
-        # Construct the SQL query with the filtering conditions
-        # Execute the query and fetch the filtered data
-        # Assign the filtered data to a variable for rendering
         selected_block = request.form.get('block')
         selected_professor = request.form.get('professor')
         selected_exam_type = request.form.get('exam_type')
@@ -62,25 +84,53 @@ def home():
         selected_ects = request.form.get('ects')
         selected_duration = request.form.get('duration')
         selected_prerequisite = request.form.get('prerequisite')
+        exclude_prerequisite = 'exclude_prerequisite' in request.form
 
-        if selected_block:
-            query += f" AND b.number = {selected_block}"
-        if selected_professor:
-            query += f" AND p.name = '{selected_professor}'"
-        if selected_exam_type:
-            query += f" AND et.name = '{selected_exam_type}'"
+
+        query_conditions = []
+        if selected_block and selected_block != 'None':
+            query_conditions.append(f"b.number = {selected_block}")
+
+        if selected_professor and selected_professor != 'None':
+            query_conditions.append(f"p.name = '{selected_professor}'")
+
+        if selected_exam_type and selected_exam_type != 'None':
+            query_conditions.append(f"et.name = '{selected_exam_type}'")
+
         if selected_grade:
-            query += f" AND cr.average_grade >= {selected_grade}"
-        if selected_ects:
-            query += f" AND c.ECTS = {selected_ects}"
-        if selected_duration:
-            query += f" AND c.duration = {selected_duration}"
-        if selected_prerequisite:
-            query += f" AND pr.name = '{selected_prerequisite}'"
+            query_conditions.append(f"cr.average_grade >= {selected_grade}")
+
+        if selected_ects and selected_ects != 'None':
+            query_conditions.append(f"c.ECTS = {selected_ects}")
+
+        if selected_duration and selected_duration != 'None':
+            query_conditions.append(f"c.duration = {selected_duration}")
+
+        prerequisite_condition = ""
+        if selected_prerequisite and selected_prerequisite != 'None':
+            prerequisite_condition = """
+            EXISTS (
+                SELECT 1 
+                FROM CoursePrerequisite cp 
+                JOIN Course pr ON cp.prerequisite_course_id = pr.id 
+                WHERE cp.course_id = c.id AND pr.name = '%s'
+            )
+            """ % selected_prerequisite
+            if exclude_prerequisite:
+                prerequisite_condition = "NOT " + prerequisite_condition
+            query_conditions.append(prerequisite_condition)
+
+    if query_conditions:
+        query += " WHERE " + " AND ".join(query_conditions)
+
+    query += """
+        GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
+    """
 
     curs.execute(query)
     data = curs.fetchall()
     conn.close()
 
-    return render_template('home.html', data=data)
+    return render_template('home.html', data=data, blocks=blocks, professors=professor, exam_types=exam_type, ects=ects, durations=duration, prerequisites=prerequisites, form=request.form)
+
 
