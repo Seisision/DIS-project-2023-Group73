@@ -1,19 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Course Information</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid black;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+    </style>
 </head>
 <body>
-    <h1>Data</h1>
-
+    <h1>Course Information</h1>
     <table>
-        {% for row in data %}
-        <tr>
-            {% for column in row %}
-            <td>{{ column }}</td>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Block</th>
+                <th>Duration</th>
+                <th>Prerequisites</th>
+                <th>Professor</th>
+                <th>Average Grade</th>
+                <th>Exam Type</th>
+                <th>ECTS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in data %}
+            <tr>
+                <td>{{ course[0] }}</td>
+                <td>{{ course[1] }}</td>
+                <td>{{ course[2] }}</td>
+                <td>
+                    {% if course[3] and course[3] != [] %}
+                        {% for prerequisite in course[3] %}
+                            {{ prerequisite }},
+                        {% endfor %}
+                    {% else %}
+                        No prerequisites
+                    {% endif %}
+                </td>
+                <td>{{ course[4] }}</td>
+                <td>{{ course[5] }}</td>
+                <td>{{ course[6] }}</td>
+                <td>{{ course[7] }}</td>
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>

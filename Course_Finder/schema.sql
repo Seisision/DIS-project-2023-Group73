@@ -13,9 +13,18 @@ CREATE TABLE Course (
     duration INT NOT NULL,
     ECTS INT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    prerequesite_course_id INT, 
-    FOREIGN KEY (prerequesite_course_id) REFERENCES Course(id) 
+    prerequisite_course_id INT, 
+    FOREIGN KEY (prerequisite_course_id) REFERENCES Course(id) 
 );
+
+CREATE TABLE CoursePrerequisite (
+    course_id INT NOT NULL,
+    prerequisite_course_id INT NOT NULL,
+    PRIMARY KEY (course_id, prerequisite_course_id),
+    FOREIGN KEY (course_id) REFERENCES Course(id),
+    FOREIGN KEY (prerequisite_course_id) REFERENCES Course(id)
+);
+
 
 CREATE TABLE Review (
     id SERIAL PRIMARY KEY,
@@ -42,7 +51,7 @@ CREATE TABLE ExamType (
 
 CREATE TABLE CourseResult (
     id SERIAL PRIMARY KEY,
-    average_grade FLOAT NOT NULL,
+    average_grade FLOAT,
     year INT NOT NULL,
     course_id INT NOT NULL,
     FOREIGN KEY (course_id) REFERENCES Course(id) 
