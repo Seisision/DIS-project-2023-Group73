@@ -11,7 +11,7 @@ CREATE TABLE Role (
 CREATE TABLE Course (
     id SERIAL PRIMARY KEY,
     duration INT NOT NULL,
-    ECTS INT NOT NULL,
+    ECTS FLOAT NOT NULL,
     name VARCHAR(100) NOT NULL,
     prerequisite_course_id INT, 
     FOREIGN KEY (prerequisite_course_id) REFERENCES Course(id) 
