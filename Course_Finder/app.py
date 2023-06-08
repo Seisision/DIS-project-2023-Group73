@@ -33,7 +33,7 @@ def home():
     conn = get_db_conn()
     curs = conn.cursor()
 
-    # Join tables to fetch the required data
+    # Join tables to fetch course data
     curs.execute("""
         SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS
         FROM Course c
@@ -48,8 +48,6 @@ def home():
         LEFT JOIN Block b ON b.number = cb.block_number
         GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
     """)
-
-
 
     data = curs.fetchall()
 
