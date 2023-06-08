@@ -8,6 +8,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -33,11 +34,16 @@
         h1 {
             text-align: center;
         }
+        
+        .filterForm {
+            text-align: center; /* align the form to the center */
+            margin-bottom: 2em; /* provide some space between the form and the table */
+        }
     </style>
 </head>
 <body>
     <div class="filterForm">
-        <form>
+        <form method="POST">
             <label for="block">Block:</label>
             <select name="block" id=block>
                 <option value="1">Block 1</option>
@@ -45,6 +51,26 @@
                 <option value="3">Block 3</option>
                 <option value="4">Block 4</option>
             </select>
+            
+            <label for="professor">Professor:</label>
+            <input type="text" id="professor" name="professor">
+
+            <label for="exam_type">Exam Type:</label>
+            <input type="text" id="exam_type" name="exam_type">
+
+            <label for="grade">Minimum Grade:</label>
+            <input type="number" id="grade" name="grade">
+
+            <label for="ects">ECTS:</label>
+            <input type="number" id="ects" name="ects">
+
+            <label for="duration">Duration:</label>
+            <input type="number" id="duration" name="duration">
+
+            <label for="prerequisite">Prerequisite:</label>
+            <input type="text" id="prerequisite" name="prerequisite">
+
+            <input type="submit" value="Filter">
         </form>
     </div>
     <div class="container">
