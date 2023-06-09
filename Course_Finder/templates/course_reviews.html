@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .review {
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .review h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .review p {
+            margin: 0.5em 0;
+        }
+        .review small {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reviews for {{ course_name }}</h1>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review">
+                    <h2>Review by {{ review[3] }}</h2> <!-- The student's name -->
+                    <p>Score: {{ review[1] }}</p> <!-- The review score -->
+                    <p>{{ review[2] }}</p> <!-- The review text -->
+                    <p><small>Posted on: {{ review[0] }}</small></p> <!-- The year when the review was posted -->
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet for this course.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

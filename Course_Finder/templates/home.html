@@ -13,6 +13,7 @@
 
         .container {
             width: 80%;
+            text-align: center;
         }
 
         table {
@@ -158,6 +159,7 @@
                     <th>Average Grade</th>
                     <th>Exam Type</th>
                     <th>ECTS</th>
+                    <th>Reviews</th>
                 </tr>
             </thead>
             <tbody>
@@ -191,10 +193,15 @@
                             {{ course[7] }}
                         {% endif %}
                     </td>
+                    <td>
+                        <form action="{{ url_for('course_reviews', course_id=course[8]) }}" method="GET" class="form-center">
+                            <button type="submit">View Reviews</button>
+                        </form>                                      
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+    </div>    
 </body>
 </html>

@@ -67,7 +67,7 @@ def home():
 
     # Join tables to fetch course data
     query = """
-        SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS
+        SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS, c.id
         FROM Course c
         LEFT JOIN CoursePrerequisite cp ON cp.course_id = c.id
         LEFT JOIN Course pr ON pr.id = cp.prerequisite_course_id
@@ -194,11 +194,28 @@ def prerequisites():
 
     return redirect(url_for('home'))
 
+@app.route('/course_reviews/<int:course_id>')
+def course_reviews(course_id):
+    conn = get_db_conn()
+    curs = conn.cursor()
+
+    # Get course name
+    course_query = "SELECT name FROM Course WHERE id = %s"
+    curs.execute(course_query, (course_id,))
+    course_name = curs.fetchone()[0]
+
+    # Get reviews
+    reviews_query = "SELECT Review.year, Review.score, Review.text, Student.name FROM Review JOIN StudentReview ON Review.id = StudentReview.review_id JOIN Student ON StudentReview.student_id = Student.id WHERE Review.course_id = %s"
+    curs.execute(reviews_query, (course_id,))
+    reviews = curs.fetchall() # Each review is a tuple (year, score, text, student_name)
+
+    return render_template('course_reviews.html', course_name=course_name, reviews=reviews)
+
 
 '''
 @app.route('/prerequisites', methods=['POST'])
 def prerequisites():
-    selected_prerequisite = request.form.get('prerequisite', '')  
+    selected_prerequisite = request.form.get('prerequisite', '')   
     exclude_prerequisite = 'exclude_prerequisite' in request.form
     action = request.form.get('action')
 

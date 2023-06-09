@@ -49,26 +49,40 @@ INSERT INTO Course (id, duration, ECTS, name) VALUES
 (9, 1, 7.5, 'Algoritmer og datastrukturer'),
 (10, 1, 7.5, 'Databases and Information Systems');
 
+
 INSERT INTO CoursePrerequisite (course_id, prerequisite_course_id) VALUES
 (3, 1),
 (5, 1),
 (5, 2),
-(6, 2),
+(6, 2), 
 (8, 7),
 (8, 5),
 (9, 2),
 (10, 6),
-(10,  )
+(10, 4);
 
 -- Review
 INSERT INTO Review (id, year, score, text, course_id) VALUES 
 (1, 2023, 5, 'Great Course!', 1),
 (2, 2023, 4, 'Challenging but good.', 2),
 (3, 2023, 5, 'Very useful.', 3),
-(4, 2023, 5, 'Hard but rewarding.', 4),
+(4, 2023, 5, 'Easy but easy.', 4),
 (5, 2023, 4, 'Informative.', 5),
 (6, 2023, 4, 'Great for understanding data.', 10),
-(7, 2023, 5, 'Great course!', 7); 
+(7, 2023, 5, 'Great course!', 7);  
+(8, 2023, 3, 'Useful but a bit difficult.', 1),
+(9, 2023, 4, 'Enjoyable and educational.', 1),
+(10, 2023, 5, 'Really helped with my programming skills.', 1),
+(11, 2023, 4, 'The content was deep and comprehensive.', 2),
+(12, 2023, 3, 'Bit hard to understand at times, but overall good.', 2),
+(13, 2023, 5, 'Amazing course, really explained algorithms well.', 2),
+(14, 2023, 4, 'Very practical!', 3),
+(15, 2023, 3, 'A bit complex at times, but very rewarding.', 3),
+(16, 2023, 5, 'Engaging course with excellent examples.', 3),
+(17, 2023, 4, 'Very useful for getting to grips with data systems.', 10),
+(18, 2023, 3, 'Great content, though could use more examples.', 10),
+(19, 2023, 5, 'This course really clarified databases for me.', 10);
+
 
 -- Student
 INSERT INTO Student (id, name) VALUES 
