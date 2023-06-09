@@ -89,6 +89,7 @@ def home():
     # Construct the SQL query with the filtering conditions
     # Execute the query and fetch the filtered data
     # Assign the filtered data to a variable for rendering
+    params = []
     if request.method == 'POST':
         selected_block = request.form.get('block')
         selected_professor = request.form.get('professor')
@@ -96,7 +97,7 @@ def home():
         selected_grade = request.form.get('grade')
         selected_ects = request.form.get('ects')
         selected_duration = request.form.get('duration')
-        selected_prerequisite = request.form.get('prerequisite') 
+        selected_course_name = request.form.get('course_name')
         exclude_prerequisite = 'exclude_prerequisite' in request.form
 
 
@@ -119,6 +120,12 @@ def home():
 
         if selected_duration and selected_duration != 'None':
             query_conditions.append(f"c.duration = {selected_duration}")
+
+         # Add a condition for the course name search
+        if selected_course_name:
+            query_conditions.append("c.name ILIKE %s")
+            params.append(f"%{selected_course_name}%")
+
 
         selected_prerequisites = session.get('selected_prerequisites', [])
         exclude_prerequisite = 'exclude_prerequisite' in request.form
@@ -145,7 +152,7 @@ def home():
         GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
     """
 
-    curs.execute(query)
+    curs.execute(query, params)
     data = curs.fetchall()
     conn.close()
 
@@ -212,27 +219,7 @@ def course_reviews(course_id):
     return render_template('course_reviews.html', course_name=course_name, reviews=reviews)
 
 
-'''
-@app.route('/prerequisites', methods=['POST'])
-def prerequisites():
-    selected_prerequisite = request.form.get('prerequisite', '')   
-    exclude_prerequisite = 'exclude_prerequisite' in request.form
-    action = request.form.get('action')
 
-    if selected_prerequisite and selected_prerequisite != 'Any':
-        if action == 'Add':
-            session['selected_prerequisites'].append({'name': selected_prerequisite, 'exclude': exclude_prerequisite})
-        elif action == 'Remove':
-            print("Before removal:", session['selected_prerequisites'])
-            session['selected_prerequisites'] = [p for p in session['selected_prerequisites'] if p['name'] != selected_prerequisite]
-            print("After removal:", session['selected_prerequisites'])
-    else:
-        print("Selected prerequisite is empty or None.")
-
-    session.modified = True
-
-    return redirect(url_for('home'))
-'''
 
 
 
