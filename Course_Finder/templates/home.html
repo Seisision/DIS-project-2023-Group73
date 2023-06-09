@@ -19,7 +19,7 @@
             width: 100%;
             border-collapse: collapse;
         }
-    
+
         th, td {
             padding: 8px;
             border: 1px solid black;
@@ -126,27 +126,24 @@
                 <label for="exclude_prerequisite">Exclude:</label>
                 <input type="checkbox" id="exclude_prerequisite" name="exclude_prerequisite" {% if form.get('exclude_prerequisite') %}checked{% endif %}>
             </form>   
-        
+
             <!-- List of selected prerequisites -->
             {% if selected_prerequisites %}
             <h3>Your Selected Prerequisites:</h3>
             <ul>
                 {% for prerequisite in selected_prerequisites %}
-                <li>
-                    <!-- If this prerequisite is marked for exclusion, display it in red -->
-                    <span {% if prerequisite['exclude'] %}style="color: red;"{% endif %}>
-                        {{ prerequisite['name'] }}
-                    </span>
-                    <!-- Form for removing the prerequisite -->
-                    <form action="{{ url_for('prerequisites') }}" method="POST" style="display: inline;">
-                        <input type="hidden" name="prerequisite" value="{{ prerequisite['name'] }}">
-                        <input type="submit" name="action" value="Remove">
-                    </form>
-                </li>
+                    <li>
+                        {{ prerequisite }}
+                        <!-- Form for removing the prerequisite -->
+                        <form action="{{ url_for('prerequisites') }}" method="POST" style="display: inline;">
+                            <input type="hidden" name="prerequisite" value="{{ prerequisite }}">
+                            <input type="submit" name="action" value="Remove">
+                        </form>
+                    </li>
                 {% endfor %}
             </ul>
-            {% endif %}                    
-        </div>        
+        {% endif %}                    
+        </div>
     </div>
     <div class="container">
         <h1>Course Information</h1>
