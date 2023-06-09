@@ -59,8 +59,7 @@ def home():
 
     # fetch prerequisites
     curs.execute("SELECT DISTINCT name FROM Course ORDER BY name")
-    prerequisites = [{'name': record[0], 'exclude': False} for record in curs.fetchall()]
-    # prerequisites = [record[0] for record in curs.fetchall()]
+    prerequisites = [record[0] for record in curs.fetchall()]
 
     # fetch duration
     curs.execute("SELECT DISTINCT duration FROM Course ORDER BY duration")
@@ -97,6 +96,9 @@ def home():
         selected_grade = request.form.get('grade')
         selected_ects = request.form.get('ects')
         selected_duration = request.form.get('duration')
+        selected_prerequisite = request.form.get('prerequisite') 
+        exclude_prerequisite = 'exclude_prerequisite' in request.form
+
 
         session.modified = True  # This line is needed because mutable session data might not trigger a save
 
@@ -118,33 +120,24 @@ def home():
         if selected_duration and selected_duration != 'None':
             query_conditions.append(f"c.duration = {selected_duration}")
 
-        prerequisite_conditions = []
-
-        # Construct the filtered prerequisites list
         selected_prerequisites = session.get('selected_prerequisites', [])
-        prerequisite_conditions = []
+        exclude_prerequisite = 'exclude_prerequisite' in request.form
 
         # If selected_prerequisites is not empty
         if selected_prerequisites:
-            for prerequisite in selected_prerequisites:
+            for prerequisite in session.get('selected_prerequisites', []):
                 prerequisite_condition = """
                 EXISTS (
                     SELECT 1 
                     FROM CoursePrerequisite cp 
                     JOIN Course pr ON cp.prerequisite_course_id = pr.id 
-                    WHERE cp.course_id = c.id AND pr.name = %s
+                    WHERE cp.course_id = c.id AND pr.name = '%s'
                 )
-                """
+                """ % prerequisite['name']
                 if prerequisite['exclude']:
                     prerequisite_condition = "NOT " + prerequisite_condition
-                prerequisite_conditions.append(prerequisite_condition)
+                query_conditions.append(prerequisite_condition)
 
-        if prerequisite_conditions:
-            query_conditions.append("(" + " OR ".join(prerequisite_conditions) + ")")
-
-        query += " WHERE " + " AND ".join(query_conditions)
-
-        curs.execute(query, [prerequisite['name'] for prerequisite in selected_prerequisites])
 
     if query_conditions:
         query += " WHERE " + " AND ".join(query_conditions)
@@ -178,20 +171,15 @@ def prerequisites():
     exclude_prerequisite = 'exclude_prerequisite' in request.form
     action = request.form.get('action')
 
-    print("Received prerequisite: ", selected_prerequisite)
-    print("Received action: ", action)
-
-    if selected_prerequisite and selected_prerequisite != '':
+    if selected_prerequisite and selected_prerequisite != 'Any':
         if action == 'Add':
-            if 'selected_prerequisites' not in session:
-                session['selected_prerequisites'] = [{'name': selected_prerequisite, 'exclude': exclude_prerequisite}]
-            else:
-                session['selected_prerequisites'].append({'name': selected_prerequisite, 'exclude': exclude_prerequisite})
-            print("Added prerequisite, session is now: ", session['selected_prerequisites'])
-        elif action == 'Remove' and 'selected_prerequisites' in session:
-            session['selected_prerequisites'] = [prerequisite for prerequisite in session['selected_prerequisites'] if prerequisite['name'] != selected_prerequisite]
-            print("Removed prerequisite, session is now: ", session['selected_prerequisites'])
-            
+            session['selected_prerequisites'].append({'name': selected_prerequisite, 'exclude': exclude_prerequisite})
+        elif action == 'Remove':
+            session['selected_prerequisites'] = [p for p in session['selected_prerequisites'] if p['name'] != selected_prerequisite]
+
+    else:
+        print("Selected prerequisite is empty or None.")
+
     session.modified = True
 
     return redirect(url_for('home'))
