@@ -144,9 +144,9 @@ def home():
                 if exclude_prerequisite:
                     prerequisite_condition = "NOT " + prerequisite_condition
                 query_conditions.append(prerequisite_condition)
-
-        if query_conditions:
-            query += " WHERE " + " AND ".join(query_conditions)
+                
+    if query_conditions:
+        query += " WHERE " + " AND ".join(query_conditions)
 
     query += """
         GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
