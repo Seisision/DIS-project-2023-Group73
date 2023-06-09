@@ -125,7 +125,7 @@ def home():
 
         # If selected_prerequisites is not empty
         if selected_prerequisites:
-            for prerequisite in session.get('selected_prerequisites', []):
+            for prerequisite in selected_prerequisites:
                 prerequisite_condition = """
                 EXISTS (
                     SELECT 1 
@@ -133,14 +133,13 @@ def home():
                     JOIN Course pr ON cp.prerequisite_course_id = pr.id 
                     WHERE cp.course_id = c.id AND pr.name = '%s'
                 )
-                """ % prerequisite['name']
-                if prerequisite['exclude']:
+                """ % prerequisite
+                if exclude_prerequisite:
                     prerequisite_condition = "NOT " + prerequisite_condition
                 query_conditions.append(prerequisite_condition)
 
-
-    if query_conditions:
-        query += " WHERE " + " AND ".join(query_conditions)
+        if query_conditions:
+            query += " WHERE " + " AND ".join(query_conditions)
 
     query += """
         GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
@@ -168,15 +167,26 @@ def home():
 @app.route('/prerequisites', methods=['POST'])
 def prerequisites():
     selected_prerequisite = request.form.get('prerequisite', '')  
-    exclude_prerequisite = 'exclude_prerequisite' in request.form
     action = request.form.get('action')
 
-    if selected_prerequisite and selected_prerequisite != 'Any':
-        if action == 'Add':
-            session['selected_prerequisites'].append({'name': selected_prerequisite, 'exclude': exclude_prerequisite})
-        elif action == 'Remove':
-            session['selected_prerequisites'] = [p for p in session['selected_prerequisites'] if p['name'] != selected_prerequisite]
+    print("Received prerequisite: ", selected_prerequisite)
+    print("Received action: ", action)
 
+    if selected_prerequisite != '' and selected_prerequisite is not None:
+        print("Selected prerequisite is non-empty and not None.")
+        if action == 'Add':  # change 'add' to 'Add'
+            print("Adding prerequisite...")
+            if 'selected_prerequisites' not in session:
+                print("Session['selected_prerequisites'] does not exist, creating...")
+                session['selected_prerequisites'] = [selected_prerequisite]
+            else:
+                print("Session['selected_prerequisites'] exists, appending...")
+                session['selected_prerequisites'].append(selected_prerequisite)
+            print("Added prerequisite, session is now: ", session['selected_prerequisites'])
+        elif action == 'Remove' and 'selected_prerequisites' in session:  # change 'remove' to 'Remove'
+            if selected_prerequisite in session['selected_prerequisites']:
+                session['selected_prerequisites'].remove(selected_prerequisite)
+            print("Removed prerequisite, session is now: ", session['selected_prerequisites'])
     else:
         print("Selected prerequisite is empty or None.")
 
@@ -184,6 +194,28 @@ def prerequisites():
 
     return redirect(url_for('home'))
 
+
+'''
+@app.route('/prerequisites', methods=['POST'])
+def prerequisites():
+    selected_prerequisite = request.form.get('prerequisite', '')  
+    exclude_prerequisite = 'exclude_prerequisite' in request.form
+    action = request.form.get('action')
+
+    if selected_prerequisite and selected_prerequisite != 'Any':
+        if action == 'Add':
+            session['selected_prerequisites'].append({'name': selected_prerequisite, 'exclude': exclude_prerequisite})
+        elif action == 'Remove':
+            print("Before removal:", session['selected_prerequisites'])
+            session['selected_prerequisites'] = [p for p in session['selected_prerequisites'] if p['name'] != selected_prerequisite]
+            print("After removal:", session['selected_prerequisites'])
+    else:
+        print("Selected prerequisite is empty or None.")
+
+    session.modified = True
+
+    return redirect(url_for('home'))
+'''
 
 
 
