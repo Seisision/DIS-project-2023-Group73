@@ -19,7 +19,7 @@
             width: 100%;
             border-collapse: collapse;
         }
-
+    
         th, td {
             padding: 8px;
             border: 1px solid black;
@@ -43,87 +43,110 @@
 </head>
 <body>
     <div class="filterForm">
-        <form method="POST">
-            <label for="block">Block:</label>
-            <select name="block" id="block">
-                <option value="">Any</option>
-                {% for block in blocks %}
-                    {% if block|string == request.form.get('block') %}
-                        <option value="{{ block }}" selected>Block {{ block }}</option>
-                    {% else %}
-                        <option value="{{ block }}">Block {{ block }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
+        <div class="mainFilterForm">
+            <form method="POST">
             
-            <label for="professor">Professor:</label>
-            <select name="professor" id="professor">
-                <option value="">Any</option>
-                {% for prof in professors %}
-                    {% if prof|string == request.form.get('professor') %}
-                        <option value="{{ prof }}" selected>{{ prof }}</option>
-                    {% else %}
-                        <option value="{{ prof }}">{{ prof }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
+                <label for="block">Block:</label>
+                <select name="block" id="block">
+                    <option value="">Any</option>
+                    {% for block in blocks %}
+                        {% if block|string == request.form.get('block') %}
+                            <option value="{{ block }}" selected>Block {{ block }}</option>
+                        {% else %}
+                            <option value="{{ block }}">Block {{ block }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                
+                <label for="professor">Professor:</label>
+                <select name="professor" id="professor">
+                    <option value="">Any</option>
+                    {% for prof in professors %}
+                        {% if prof|string == request.form.get('professor') %}
+                            <option value="{{ prof }}" selected>{{ prof }}</option>
+                        {% else %}
+                            <option value="{{ prof }}">{{ prof }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            
+                <label for="exam_type">Exam Type:</label>
+                <select name="exam_type" id="exam_type">
+                    <option value="">Any</option>
+                    {% for exam in exam_types %}
+                        {% if exam|string == request.form.get('exam_type') %}
+                            <option value="{{ exam }}" selected>{{ exam }}</option>
+                        {% else %}
+                            <option value="{{ exam }}">{{ exam }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            
+                <label for="grade">Minimum Grade:</label>
+                <input type="number" id="grade" name="grade" value="{{ form.get('grade') if form.get('grade') }}">
+            
+                <label for="ects">ECTS:</label>
+                <select name="ects" id="ects">
+                    <option value="">Any</option>
+                    {% for e in ects %}
+                        {% if e|string == request.form.get('ects') %}
+                            <option value="{{ e }}" selected>{{ e }}</option>
+                        {% else %}
+                            <option value="{{ e }}">{{ e }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            
+                <label for="duration">Duration:</label>
+                <select name="duration" id="duration">
+                    <option value="">Any</option>
+                    {% for d in durations %}
+                        {% if d|string == request.form.get('duration') %}
+                            <option value="{{ d }}" selected>{{ d }}</option>
+                        {% else %}
+                            <option value="{{ d }}">{{ d }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
         
-            <label for="exam_type">Exam Type:</label>
-            <select name="exam_type" id="exam_type">
-                <option value="">Any</option>
-                {% for exam in exam_types %}
-                    {% if exam|string == request.form.get('exam_type') %}
-                        <option value="{{ exam }}" selected>{{ exam }}</option>
-                    {% else %}
-                        <option value="{{ exam }}">{{ exam }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        
-            <label for="grade">Minimum Grade:</label>
-            <input type="number" id="grade" name="grade" value="{{ form.get('grade') if form.get('grade') }}">
-        
-            <label for="ects">ECTS:</label>
-            <select name="ects" id="ects">
-                <option value="">Any</option>
-                {% for e in ects %}
-                    {% if e|string == request.form.get('ects') %}
-                        <option value="{{ e }}" selected>{{ e }}</option>
-                    {% else %}
-                        <option value="{{ e }}">{{ e }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        
-            <label for="duration">Duration:</label>
-            <select name="duration" id="duration">
-                <option value="">Any</option>
-                {% for d in durations %}
-                    {% if d|string == request.form.get('duration') %}
-                        <option value="{{ d }}" selected>{{ d }}</option>
-                    {% else %}
-                        <option value="{{ d }}">{{ d }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        
-            <label for="prerequisite">Prerequisite:</label>
-            <select name="prerequisite" id="prerequisite">
-                <option value="">Any</option>
-                {% for prerequisite in prerequisites %}
-                    {% if prerequisite|string == request.form.get('prerequisite') %}
-                        <option value="{{ prerequisite }}" selected>{{ prerequisite }}</option>
-                    {% else %}
+                <input type="submit" value="Filter">
+            </form>
+        </div>
+
+        <div class="prerequisiteForm">
+            <form action="{{ url_for('prerequisites') }}" method="POST">
+                <label for="prerequisite">Prerequisite:</label>
+                <select name="prerequisite" id="prerequisite">
+                    <option value="">Any</option>
+                    {% for prerequisite in prerequisites %}
                         <option value="{{ prerequisite }}">{{ prerequisite }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <label for="exclude_prerequisite">Exclude:</label>
-            <input type="checkbox" id="exclude_prerequisite" name="exclude_prerequisite" {% if form.get('exclude_prerequisite') %}checked{% endif %}>
-            
+                    {% endfor %}
+                </select>
+                <input type="submit" name="action" value="Add">
+                <label for="exclude_prerequisite">Exclude:</label>
+                <input type="checkbox" id="exclude_prerequisite" name="exclude_prerequisite" {% if form.get('exclude_prerequisite') %}checked{% endif %}>
+            </form>   
         
-            <input type="submit" value="Filter">
-        </form>
+            <!-- List of selected prerequisites -->
+            {% if selected_prerequisites %}
+            <h3>Your Selected Prerequisites:</h3>
+            <ul>
+                {% for prerequisite in selected_prerequisites %}
+                <li>
+                    <!-- If this prerequisite is marked for exclusion, display it in red -->
+                    <span {% if prerequisite['exclude'] %}style="color: red;"{% endif %}>
+                        {{ prerequisite['name'] }}
+                    </span>
+                    <!-- Form for removing the prerequisite -->
+                    <form action="{{ url_for('prerequisites') }}" method="POST" style="display: inline;">
+                        <input type="hidden" name="prerequisite" value="{{ prerequisite['name'] }}">
+                        <input type="submit" name="action" value="Remove">
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}                    
+        </div>        
     </div>
     <div class="container">
         <h1>Course Information</h1>
