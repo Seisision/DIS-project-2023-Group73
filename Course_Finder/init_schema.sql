@@ -83,7 +83,6 @@ INSERT INTO Review (id, year, score, text, course_id) VALUES
 (18, 2023, 3, 'Great content, though could use more examples.', 10),
 (19, 2023, 5, 'This course really clarified databases for me.', 10);
 
-
 -- Student
 INSERT INTO Student (id, name) VALUES 
 (1, 'Student A'),
@@ -167,3 +166,15 @@ INSERT INTO StudentReview (student_id, review_id) VALUES
 (3, 5),
 (3, 6),
 (4, 7);
+(1, 8),
+(1, 9),
+(2, 10),
+(2, 11),
+(3, 12),
+(3, 13),
+(4, 14),
+(4, 15),
+(5, 16),
+(5, 17),
+(6, 18),
+(6, 19);
