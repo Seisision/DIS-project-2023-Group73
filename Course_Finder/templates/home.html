@@ -145,9 +145,9 @@
             </ul>
         {% endif %}     
             <form method="POST">
-                <input type="text" name="course_name" placeholder="Search for a course">
+                <input type="text" name="course_name" placeholder="Search for a course" value="{{ request.form.get('course_name', '') }}">
                 <input type="submit" value="Search">
-            </form>     
+            </form>        
         </div>
     </div>
     <div class="container">
