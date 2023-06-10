@@ -70,6 +70,7 @@ INSERT INTO Student (id, username, password_hash, name) VALUES
 (4, 'student_d', 'password_hash_value', 'Student D'),
 (5, 'student_e', 'password_hash_value', 'Student E'),
 (6, 'student_f', 'password_hash_value', 'Student F');
+SELECT setval('student_id_seq', (SELECT MAX(id) FROM Student));
 
 -- Review
 INSERT INTO Review (id, year, score, text, course_id) VALUES 
@@ -92,6 +93,7 @@ INSERT INTO Review (id, year, score, text, course_id) VALUES
 (17, 2023, 4, 'Very useful for getting to grips with data systems.', 10),
 (18, 2023, 3, 'Great content, though could use more examples.', 10),
 (19, 2023, 5, 'This course really clarified databases for me.', 10);
+SELECT setval('review_id_seq', (SELECT MAX(id) FROM Review));
 
 
 
