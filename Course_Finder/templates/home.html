@@ -43,6 +43,18 @@
     </style>
 </head>
 <body>
+    <div class="user-panel" style="text-align: center; margin-bottom: 20px;">
+        {% if current_user.is_authenticated %}
+            <p>Logged in as: {{ current_user.username }}</p>
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <form action="/login" method="GET">
+                <button type="submit">Login</button>
+            </form>
+        {% endif %}
+    </div>
     <div class="write-review-button" style="text-align: center; margin-bottom: 20px;">
         {% if current_user.is_authenticated %}
             <form action="{{ url_for('Write_Review') }}" method="GET">

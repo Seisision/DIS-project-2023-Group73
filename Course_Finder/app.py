@@ -16,15 +16,15 @@ def create_app():
     login_manager.init_app(app) 
     @login_manager.user_loader
     def load_user(user_id):
-        return select_Student_by_id(user_id)
+        return select_Student_by_id(user_id, get_db_conn)
 
 
     # gamle Database connection settings
     host="127.0.0.1"
-    database="Course Finder"
+    database="postgres"
     user="postgres"
     password="dis"
-    port=5432
+    port=1333
 
     # Database connection settings til testing (ulrik)
     # det her er lidt en cringem måde at gøre det på,
@@ -46,13 +46,14 @@ def create_app():
         )
 
     # Routes
-    from Routes import Home, View_Review, Write_Review, Login
+    from Routes import Home, View_Review, Write_Review, Login, Register
 
     Home.init_home(app, get_db_conn)
     View_Review.init_View_Review(app, get_db_conn)
     Write_Review.init_Write_Review(app, get_db_conn)
-    # Login.init_login(app)
-
+    Login.init_login(app, get_db_conn)
+    Login.init_logout(app)
+    Register.init_register(app, get_db_conn)
 
     return app
 
