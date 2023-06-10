@@ -16,7 +16,7 @@ def create_app():
     login_manager.init_app(app) 
     @login_manager.user_loader
     def load_user(user_id):
-        return select_Student_by_id(user_id)
+        return select_Student_by_id(user_id, get_db_conn)
 
 
     # gamle Database connection settings
@@ -51,7 +51,8 @@ def create_app():
     Home.init_home(app, get_db_conn)
     View_Review.init_View_Review(app, get_db_conn)
     Write_Review.init_Write_Review(app, get_db_conn)
-    Login.init_login(app)
+    Login.init_login(app, get_db_conn)
+    Login.init_logout(app)
     Register.init_register(app, get_db_conn)
 
     return app

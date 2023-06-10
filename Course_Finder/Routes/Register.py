@@ -11,10 +11,11 @@ def init_register(app, get_db_conn):
             return redirect(url_for('home'))
 
         form = RegistrationForm()
-
+ 
         if form.validate_on_submit():
             print('Validated')
-            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            #hashed_password = bcrypt.hashpw((form.password.data).decode('utf-8'), bcrypt.gensalt())
+            hashed_password = bcrypt.hashpw(form.password.data.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             # Hash the password entered by the user
 
             # Create a new Student object and populate its attributes
@@ -25,6 +26,6 @@ def init_register(app, get_db_conn):
 
             flash('Registration successful. You can now log in.', 'success')
             return redirect(url_for('login'))  # Redirect to the login page
-
+        
         return render_template('register.html', title='Register', form=form)
 
