@@ -136,25 +136,32 @@
         </div>
 
         <div class="prerequisiteForm">
-            <form action="{{ url_for('prerequisites') }}" method="POST">
-                <label for="prerequisite">Prerequisite:</label>
-                <select name="prerequisite" id="prerequisite">
-                    <option value="">Any</option>
-                    {% for prerequisite in prerequisites %}
-                        <option value="{{ prerequisite }}">{{ prerequisite }}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" name="action" value="Add">
-                <label for="exclude_prerequisite">Exclude:</label>
-                <input type="checkbox" id="exclude_prerequisite" name="exclude_prerequisite" {% if form.get('exclude_prerequisite') %}checked{% endif %}>
-            </form>   
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <div style="margin-right: 1em;">
+                    <form action="{{ url_for('load_completed_courses') }}" method="POST">
+                        <input type="submit" value="Load Completed Courses">
+                    </form>
+                </div>
+                <form action="{{ url_for('prerequisites') }}" method="POST">
+                    <label for="prerequisite" style="margin-left: 1em; margin-right: 1em;">Prerequisite:</label>
+                    <select name="prerequisite" id="prerequisite">
+                        <option value="">Any</option>
+                        {% for prerequisite in prerequisites %}
+                            <option value="{{ prerequisite }}">{{ prerequisite }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" name="action" value="Add">
+                    <label for="exclude_prerequisite" style="margin-left: 1em; margin-right: 1em;">Exclude:</label>
+                    <input type="checkbox" id="exclude_prerequisite" name="exclude_prerequisite" {% if form.get('exclude_prerequisite') %}checked{% endif %}>
+                </form>
+            </div>
 
             <!-- List of selected prerequisites -->
             {% if selected_prerequisites %}
             <h3>Your Selected Prerequisites:</h3>
-            <ul>
+            <ul style="list-style-type: none; padding-left: 0;">
                 {% for prerequisite in selected_prerequisites %}
-                    <li>
+                    <li style="margin-left: -1em;">
                         {{ prerequisite }}
                         <!-- Form for removing the prerequisite -->
                         <form action="{{ url_for('prerequisites') }}" method="POST" style="display: inline;">
@@ -164,7 +171,7 @@
                     </li>
                 {% endfor %}
             </ul>
-        {% endif %}     
+        {% endif %}
             <form method="POST">
                 <input type="text" name="course_name" placeholder="Search for a course" value="{{ request.form.get('course_name', '') }}">
                 <input type="submit" value="Search">

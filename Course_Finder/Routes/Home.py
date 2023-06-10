@@ -1,4 +1,5 @@
 from flask import render_template, request, session, redirect, url_for
+from flask_login import current_user
 
 def init_home(app, get_db_conn):
 
@@ -165,6 +166,33 @@ def init_home(app, get_db_conn):
                 print("Removed prerequisite, session is now: ", session['selected_prerequisites'])
         else:
             print("Selected prerequisite is empty or None.")
+
+        session.modified = True
+
+        return redirect(url_for('home'))
+    
+    @app.route('/load_completed_courses', methods=['POST'])
+    def load_completed_courses():
+        conn = get_db_conn()
+        curs = conn.cursor()
+
+        # Query to fetch completed courses for the current user
+        query = """
+            SELECT c.name 
+            FROM CompletedCourses cc
+            JOIN Course c ON cc.course_id = c.id
+            WHERE cc.student_id = %s
+        """
+        curs.execute(query, [current_user.id])
+        completed_courses = [record[0] for record in curs.fetchall()]
+        conn.close()
+
+        # Add the completed courses to the session
+        if 'selected_prerequisites' not in session:
+            session['selected_prerequisites'] = completed_courses
+        else:
+            session['selected_prerequisites'].extend(completed_courses)
+        session['selected_prerequisites'] = list(set(session['selected_prerequisites']))  # Remove duplicates
 
         session.modified = True
 
