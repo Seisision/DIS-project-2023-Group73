@@ -60,6 +60,9 @@
             <form action="{{ url_for('Write_Review') }}" method="GET">
                 <button type="submit">Write a Review</button>
             </form>
+            <form action="{{ url_for('completed_courses') }}" method="GET" style="display: inline;">
+                <button type="submit">Completed Courses</button>
+            </form>            
         {% endif %}
     </div>
     <div class="filterForm">
