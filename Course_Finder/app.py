@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_session import Session
+from flask_login import LoginManager
+from .models import Student, select_Student_by_id
 import psycopg2
 
 def create_app():
@@ -9,6 +11,13 @@ def create_app():
     app.config['SESSION_TYPE'] = 'filesystem'
 
     Session(app)
+
+    login_manager = LoginManager()
+    login_manager.init_app(app) 
+    @login_manager.user_loader
+    def load_user(user_id):
+        return select_Student_by_id(user_id)
+
 
     # gamle Database connection settings
     host="127.0.0.1"
