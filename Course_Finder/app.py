@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_session import Session
 from flask_login import LoginManager
-from .models import Student, select_Student_by_id
+from models import select_Student_by_id
 import psycopg2
 
 def create_app():
