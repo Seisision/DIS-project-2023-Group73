@@ -20,21 +20,21 @@ def create_app():
 
 
     # gamle Database connection settings
-    host="127.0.0.1"
-    database="Course Finder"
-    user="postgres"
-    password="dis"
-    port=5432
+    #host="127.0.0.1"
+    #database="Course Finder"
+    #user="postgres"
+    #password="dis"
+    #port=5432
 
     # Database connection settings til testing (ulrik)
     # det her er lidt en cringem måde at gøre det på,
     # men jeg tror de originale settings er gemt ovenfor?
 
-    #host="127.0.0.1"
-    #database="postgres"
-    #user="postgres"
-    #password="dis"
-    #port=1333
+    host="127.0.0.1"
+    database="postgres"
+    user="postgres"
+    password="dis"
+    port=1333
 
     def get_db_conn():
         return psycopg2.connect(

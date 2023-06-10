@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 from datetime import datetime
 from flask_login import current_user
 
@@ -30,6 +30,22 @@ def init_Write_Review(app, get_db_conn):
             if cur.rowcount == 0:
                 # The student has not completed the course
                 return 'You can only review courses you have completed.'
+            
+            # Check if the user has already reviewed the selected course
+            query = """
+                SELECT EXISTS (
+                    SELECT 1 FROM StudentReview JOIN Review ON StudentReview.review_id = Review.id
+                    WHERE StudentReview.student_id = %s AND course_id = %s
+                ) AS reviewed;
+            """
+            cur.execute(query, (student_id, course_id))
+            result = cur.fetchone()
+            reviewed = result[0] if result else False
+
+            if reviewed:
+                flash('You have already reviewed this course. Please edit your review or delete it under "My reviews"', 'warning')
+                print('You have already reviewed this course.')
+                return redirect(url_for('Write_Review'))
 
             # Insert the review into the Review table
             query = "INSERT INTO Review (year, score, text, course_id) VALUES (%s, %s, %s, %s) RETURNING id;"
