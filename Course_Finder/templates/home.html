@@ -44,9 +44,11 @@
 </head>
 <body>
     <div class="write-review-button" style="text-align: center; margin-bottom: 20px;">
-        <form action="{{ url_for('Write_Review') }}" method="GET">
-            <button type="submit">Write a Review</button>
-        </form>
+        {% if current_user.is_authenticated %}
+            <form action="{{ url_for('Write_Review') }}" method="GET">
+                <button type="submit">Write a Review</button>
+            </form>
+        {% endif %}
     </div>
     <div class="filterForm">
         <div class="mainFilterForm">
