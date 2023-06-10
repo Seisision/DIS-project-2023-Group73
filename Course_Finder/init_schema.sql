@@ -13,6 +13,7 @@ DELETE FROM CoursePrerequisite;
 DELETE FROM Course;
 DELETE FROM Role;
 DELETE FROM Professor;
+DELETE FROM CompletedCourses;
 -- Now insert data
 
 -- Insert professors
@@ -61,6 +62,15 @@ INSERT INTO CoursePrerequisite (course_id, prerequisite_course_id) VALUES
 (10, 6),
 (10, 4);
 
+-- students
+INSERT INTO Student (id, username, password_hash, name) VALUES 
+(1, 'student_a', 'password_hash_value', 'Student A'),
+(2, 'student_b', 'password_hash_value', 'Student B'),
+(3, 'student_c', 'password_hash_value', 'Student C'),
+(4, 'student_d', 'password_hash_value', 'Student D'),
+(5, 'student_e', 'password_hash_value', 'Student E'),
+(6, 'student_f', 'password_hash_value', 'Student F');
+
 -- Review
 INSERT INTO Review (id, year, score, text, course_id) VALUES 
 (1, 2023, 5, 'Great Course!', 1),
@@ -83,13 +93,7 @@ INSERT INTO Review (id, year, score, text, course_id) VALUES
 (18, 2023, 3, 'Great content, though could use more examples.', 10),
 (19, 2023, 5, 'This course really clarified databases for me.', 10);
 
-INSERT INTO Student (id, username, password_hash, name) VALUES 
-(1, 'student_a', 'password_hash_value', 'Student A'),
-(2, 'student_b', 'password_hash_value', 'Student B'),
-(3, 'student_c', 'password_hash_value', 'Student C'),
-(4, 'student_d', 'password_hash_value', 'Student D'),
-(5, 'student_e', 'password_hash_value', 'Student E'),
-(6, 'student_f', 'password_hash_value', 'Student F');
+
 
 -- Block
 INSERT INTO Block (number) VALUES 

@@ -21,10 +21,10 @@ def create_app():
 
     # gamle Database connection settings
     host="127.0.0.1"
-    database="postgres"
+    database="Course Finder"
     user="postgres"
     password="dis"
-    port=1333
+    port=5432
 
     # Database connection settings til testing (ulrik)
     # det her er lidt en cringem måde at gøre det på,
@@ -46,7 +46,7 @@ def create_app():
         )
 
     # Routes
-    from Routes import Home, View_Review, Write_Review, Login, Register
+    from Routes import Home, View_Review, Write_Review, Login, Register, Completed_Courses
 
     Home.init_home(app, get_db_conn)
     View_Review.init_View_Review(app, get_db_conn)
@@ -54,6 +54,7 @@ def create_app():
     Login.init_login(app, get_db_conn)
     Login.init_logout(app)
     Register.init_register(app, get_db_conn)
+    Completed_Courses.init_Completed_Courses(app, get_db_conn)
 
     return app
 

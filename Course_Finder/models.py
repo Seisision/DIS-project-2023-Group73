@@ -63,3 +63,42 @@ def save_student(student, get_db_conn):
     conn.close()
     student.id = student_id  # Assign the generated ID to the student object
 
+def select_Course_by_name(name, get_db_conn):
+    conn = get_db_conn()
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM Course
+    WHERE name = %s
+    """
+    cur.execute(sql, (name,))
+    course = cur.fetchone()
+    cur.close()
+    conn.close()
+    return course
+
+def save_completed_course(student_id, course_id, completion_date, get_db_conn):
+    conn = get_db_conn()
+    cur = conn.cursor()
+    sql = """
+    INSERT INTO CompletedCourses (student_id, course_id, completion_date)
+    VALUES (%s, %s, %s)
+    """
+    cur.execute(sql, (student_id, course_id, completion_date))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def get_completed_courses(student_id, get_db_conn):
+    conn = get_db_conn()
+    cur = conn.cursor()
+    sql = """
+    SELECT Course.name, CompletedCourses.completion_date 
+    FROM CompletedCourses 
+    INNER JOIN Course ON CompletedCourses.course_id = Course.id
+    WHERE CompletedCourses.student_id = %s
+    """
+    cur.execute(sql, (student_id,))
+    completed_courses = cur.fetchall()
+    cur.close()
+    conn.close()
+    return completed_courses

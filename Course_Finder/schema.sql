@@ -25,6 +25,12 @@ CREATE TABLE CoursePrerequisite (
     FOREIGN KEY (prerequisite_course_id) REFERENCES Course(id)
 );
 
+CREATE TABLE Student (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL
+);
 
 CREATE TABLE Review (
     id SERIAL PRIMARY KEY,
@@ -32,17 +38,7 @@ CREATE TABLE Review (
     score INT NOT NULL,
     text TEXT,
     course_id INT NOT NULL,
-    student_id INT NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES Course(id),
-    FOREIGN KEY (student_id) REFERENCES Student(id),
-    UNIQUE (student_id, course_id)
-);
-
-CREATE TABLE Student (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
-    password_hash VARCHAR(100) NOT NULL,
-    name VARCHAR(100) NOT NULL
+    FOREIGN KEY (course_id) REFERENCES Course(id)
 );
 
 
