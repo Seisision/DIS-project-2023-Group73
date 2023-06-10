@@ -23,8 +23,11 @@ def init_Completed_Courses(app, get_db_conn):
             completion_date = form.completion_date.data
 
             # Insert into CompletedCourses table
-            save_completed_course(current_user.id, course_id, completion_date, conn)
-            flash('Course registered as completed!', 'success')
+            try:
+                save_completed_course(current_user.id, course_id, completion_date, conn)
+                flash('Course registered as completed!', 'success')
+            except Exception as e:
+                flash(f'Error saving completed course: {str(e)}', 'danger')
 
         # Retrieve the completed courses for the current user
         completed_courses = get_completed_courses(current_user.id, get_db_conn)
@@ -36,3 +39,4 @@ def init_Completed_Courses(app, get_db_conn):
         conn.close()
 
         return render_template('completed_courses.html', form=form, completed_courses=completed_courses, courses=courses)
+

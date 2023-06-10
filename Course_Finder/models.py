@@ -92,7 +92,10 @@ def get_completed_courses(student_id, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
     sql = """
-    SELECT * FROM CompletedCourses WHERE student_id = %s
+    SELECT Course.name, CompletedCourses.completion_date 
+    FROM CompletedCourses 
+    INNER JOIN Course ON CompletedCourses.course_id = Course.id
+    WHERE CompletedCourses.student_id = %s
     """
     cur.execute(sql, (student_id,))
     completed_courses = cur.fetchall()
