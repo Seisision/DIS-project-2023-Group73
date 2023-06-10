@@ -7,35 +7,35 @@
     <h1>Completed Courses</h1>
     
     {% if current_user.is_authenticated %}
-        <!-- Form to register a completed course -->
         <form action="{{ url_for('completed_courses') }}" method="POST">
+            {{ form.hidden_tag() }}
+
             <label for="course">Select Course:</label>
             <select id="course" name="course_id">
                 {% for course in courses %}
                     <option value="{{ course[0] }}">{{ course[1] }}</option>
                 {% endfor %}
             </select>
-            
+
             <label for="completion_date">Completion Date:</label>
             <input type="date" name="completion_date" required>
 
             <input type="submit" name="action" value="Register Completed Course">
         </form>
 
-        <!-- Display completed courses -->
         {% if completed_courses %}
             <table>
                 <thead>
                     <tr>
-                        <th>Course ID</th>
+                        <th>Course Name</th>
                         <th>Completion Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for course in completed_courses %}
                         <tr>
-                            <td>{{ course['course_id'] }}</td>
-                            <td>{{ course['completion_date'] }}</td>
+                            <td>{{ course[0] }}</td> 
+                            <td>{{ course[1] }}</td> 
                         </tr>
                     {% endfor %}
                 </tbody>

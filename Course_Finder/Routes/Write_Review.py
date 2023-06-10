@@ -31,9 +31,15 @@ def init_Write_Review(app, get_db_conn):
                 # The student has not completed the course
                 return 'You can only review courses you have completed.'
 
-            query = "INSERT INTO Review (year, score, text, course_id, student_id) VALUES (%s, %s, %s, %s, %s);"
-            cur.execute(query, (review_year, review_score, review_text, course_id, student_id))
-            
+            # Insert the review into the Review table
+            query = "INSERT INTO Review (year, score, text, course_id) VALUES (%s, %s, %s, %s) RETURNING id;"
+            cur.execute(query, (review_year, review_score, review_text, course_id))
+            review_id = cur.fetchone()[0]  # Retrieve the generated review ID
+
+            # Insert the association into the StudentReview table
+            query = "INSERT INTO StudentReview (student_id, review_id) VALUES (%s, %s);"
+            cur.execute(query, (student_id, review_id))
+
             conn.commit()
             cur.close()
             conn.close()
