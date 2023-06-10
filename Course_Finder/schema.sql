@@ -40,8 +40,11 @@ CREATE TABLE Review (
 
 CREATE TABLE Student (
     id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(100) NOT NULL,
     name VARCHAR(100) NOT NULL
 );
+
 
 CREATE TABLE Block (
     number INT PRIMARY KEY
