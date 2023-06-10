@@ -1,0 +1,5 @@
+# Ignore .pyc files
+*.pyc
+
+# Ignore Flask session files
+flask_session/
