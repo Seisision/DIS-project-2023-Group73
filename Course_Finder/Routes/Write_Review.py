@@ -1,5 +1,6 @@
 from flask import render_template, request
 from datetime import datetime
+from flask_login import current_user
 
 def init_Write_Review(app, get_db_conn):
     
@@ -18,8 +19,20 @@ def init_Write_Review(app, get_db_conn):
             conn = get_db_conn()
             cur = conn.cursor()
             
-            query = "INSERT INTO Review (year, score, text, course_id) VALUES (%s, %s, %s, %s);"
-            cur.execute(query, (review_year, review_score, review_text, course_id))
+            student_id = current_user.id
+
+            query = """
+                SELECT * FROM CompletedCourses
+                WHERE student_id = %s AND course_id = %s
+            """
+            cur.execute(query, (student_id, course_id))
+
+            if cur.rowcount == 0:
+                # The student has not completed the course
+                return 'You can only review courses you have completed.'
+
+            query = "INSERT INTO Review (year, score, text, course_id, student_id) VALUES (%s, %s, %s, %s, %s);"
+            cur.execute(query, (review_year, review_score, review_text, course_id, student_id))
             
             conn.commit()
             cur.close()
