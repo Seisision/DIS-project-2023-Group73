@@ -32,7 +32,10 @@ CREATE TABLE Review (
     score INT NOT NULL,
     text TEXT,
     course_id INT NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES Course(id) 
+    student_id INT NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES Course(id),
+    FOREIGN KEY (student_id) REFERENCES Student(id),
+    UNIQUE (student_id, course_id)
 );
 
 CREATE TABLE Student (
@@ -89,4 +92,13 @@ CREATE TABLE StudentReview (
     PRIMARY KEY (student_id, review_id),
     FOREIGN KEY (student_id) REFERENCES Student(id),
     FOREIGN KEY (review_id) REFERENCES Review(id)
+);
+
+CREATE TABLE CompletedCourses (
+    student_id INT NOT NULL,
+    course_id INT NOT NULL,
+    completion_date DATE,
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES Student(id),
+    FOREIGN KEY (course_id) REFERENCES Course(id)
 );
