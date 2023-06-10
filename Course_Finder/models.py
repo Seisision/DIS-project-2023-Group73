@@ -88,11 +88,23 @@ def save_completed_course(student_id, course_id, completion_date, get_db_conn):
     cur.close()
     conn.close()
 
+def delete_student_completed_course(student_id, course_id, get_db_conn):
+    conn = get_db_conn()
+    cur = conn.cursor()
+    sql = """
+    DELETE FROM CompletedCourses
+    WHERE student_id = %s AND course_id = %s
+    """
+    cur.execute(sql, (student_id, course_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
 def get_completed_courses(student_id, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
     sql = """
-    SELECT Course.name, CompletedCourses.completion_date 
+    SELECT Course.name, CompletedCourses.completion_date, Course.id 
     FROM CompletedCourses 
     INNER JOIN Course ON CompletedCourses.course_id = Course.id
     WHERE CompletedCourses.student_id = %s

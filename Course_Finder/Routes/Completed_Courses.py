@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for
 from forms import CompletedCourseForm
-from models import save_completed_course, get_completed_courses, select_Course_by_name
+from models import save_completed_course, get_completed_courses, delete_student_completed_course
 from flask_login import current_user
 
 def init_Completed_Courses(app, get_db_conn):
@@ -41,3 +41,21 @@ def init_Completed_Courses(app, get_db_conn):
         conn.close()
 
         return render_template('completed_courses.html', form=form, completed_courses=completed_courses, courses=courses)
+    
+    @app.route('/completed_courses/delete/<int:course_id>', methods=['POST'])
+    def delete_completed_course(course_id):
+        # Ensure user is logged in
+        if not current_user.is_authenticated:
+            flash('You need to be logged in to access this page.', 'danger')
+            return redirect(url_for('login'))
+
+        # Delete the completed course from the database
+        try:
+            delete_student_completed_course(current_user.id, course_id, get_db_conn)
+            flash('Course deleted successfully!', 'success')
+        except Exception as e:
+            flash(f'Error deleting course: {str(e)}', 'danger')
+
+        return redirect(url_for('completed_courses'))
+
+    return app
