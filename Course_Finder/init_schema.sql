@@ -69,7 +69,7 @@ INSERT INTO Review (id, year, score, text, course_id) VALUES
 (4, 2023, 5, 'Easy but easy.', 4),
 (5, 2023, 4, 'Informative.', 5),
 (6, 2023, 4, 'Great for understanding data.', 10),
-(7, 2023, 5, 'Great course!', 7);  
+(7, 2023, 5, 'Great course!', 7),
 (8, 2023, 3, 'Useful but a bit difficult.', 1),
 (9, 2023, 4, 'Enjoyable and educational.', 1),
 (10, 2023, 5, 'Really helped with my programming skills.', 1),
@@ -83,14 +83,13 @@ INSERT INTO Review (id, year, score, text, course_id) VALUES
 (18, 2023, 3, 'Great content, though could use more examples.', 10),
 (19, 2023, 5, 'This course really clarified databases for me.', 10);
 
--- Student
-INSERT INTO Student (id, name) VALUES 
-(1, 'Student A'),
-(2, 'Student B'),
-(3, 'Student C'),
-(4, 'Student D'),
-(5, 'Student E'),
-(6, 'Student F');
+INSERT INTO Student (id, username, password_hash, name) VALUES 
+(1, 'student_a', 'password_hash_value', 'Student A'),
+(2, 'student_b', 'password_hash_value', 'Student B'),
+(3, 'student_c', 'password_hash_value', 'Student C'),
+(4, 'student_d', 'password_hash_value', 'Student D'),
+(5, 'student_e', 'password_hash_value', 'Student E'),
+(6, 'student_f', 'password_hash_value', 'Student F');
 
 -- Block
 INSERT INTO Block (number) VALUES 
@@ -165,7 +164,7 @@ INSERT INTO StudentReview (student_id, review_id) VALUES
 (2, 4),
 (3, 5),
 (3, 6),
-(4, 7);
+(4, 7),
 (1, 8),
 (1, 9),
 (2, 10),
