@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Write Review</title>
+</head>
+<body>
+
+<form action="{{ url_for('Write_Review') }}" method="post">
+    <label for="course">Select Course:</label>
+    <select id="course" name="course">
+        {% for course in courses %}
+            <option value="{{ course[0] }}">{{ course[1] }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="score">Select Score:</label>
+    <select id="score" name="score">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    
+    <label for="review">Write your review:</label><br>
+    <textarea id="review" name="review" rows="4" cols="50"></textarea><br>
+    
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

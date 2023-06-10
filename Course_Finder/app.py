@@ -41,7 +41,7 @@ def create_app():
 
     Home.init_home(app, get_db_conn)
     View_Review.init_View_Review(app, get_db_conn)
-    # Write_Review.init_write_review(app)
+    Write_Review.init_Write_Review(app, get_db_conn)
     # Login.init_login(app)
 
 
