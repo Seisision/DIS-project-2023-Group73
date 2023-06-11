@@ -124,12 +124,12 @@ INSERT INTO CourseProfessor (professor_id, course_id) VALUES
 INSERT INTO CourseExamType (course_id, exam_type_id) VALUES 
 (1, 4),
 (2, 4),
-(3, 3),
-(4, 2),
+(3, 2),
+(4, 3),
 (5, 1),
 (6, 1),
-(7, 4),
-(8, 2),
+(7, 1),
+(8, 3),
 (9, 1),
 (10, 1);
 
