@@ -94,3 +94,9 @@ CREATE TABLE CompletedCourses (
     FOREIGN KEY (student_id) REFERENCES Student(id),
     FOREIGN KEY (course_id) REFERENCES Course(id)
 );
+
+
+CREATE VIEW CourseAverageScores AS
+SELECT course_id, AVG(score) as average_score
+FROM Review
+GROUP BY course_id;

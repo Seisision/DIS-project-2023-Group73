@@ -108,6 +108,9 @@
             
                 <label for="grade">Minimum Grade:</label>
                 <input type="number" id="grade" name="grade" value="{{ form.get('grade') if form.get('grade') }}">
+
+                <label for="min_score">Minimum Avg Review Score:</label>
+                <input type="number" step="0.1" id="min_score" name="min_score" value="{{ form.get('min_score') if form.get('min_score') }}">
             
                 <label for="ects">ECTS:</label>
                 <select name="ects" id="ects">
@@ -191,6 +194,7 @@
                     <th>Exam Type</th>
                     <th>ECTS</th>
                     <th>Reviews</th>
+                    <th>Avg Review Score</th>
                 </tr>
             </thead>
             <tbody>
@@ -225,9 +229,16 @@
                         {% endif %}
                     </td>
                     <td>
-                        <form action="{{ url_for('course_reviews', course_id=course[8]) }}" method="GET" class="form-center">
+                        <form action="{{ url_for('course_reviews', course_id=course[9]) }}" method="GET" class="form-center">
                             <button type="submit">View Reviews</button>
                         </form>                                      
+                    </td>
+                    <td>
+                        {% if course[8] %}
+                            {{ course[8]|round(2) }}
+                        {% else %}
+                            No reviews
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

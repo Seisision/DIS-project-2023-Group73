@@ -1,4 +1,5 @@
 -- Drop tables in reverse order of creation to avoid foreign key constraint errors
+DROP VIEW IF EXISTS CourseAverageScores;
 DROP TABLE IF EXISTS StudentReview;
 DROP TABLE IF EXISTS CourseBlock;
 DROP TABLE IF EXISTS CourseExamType;

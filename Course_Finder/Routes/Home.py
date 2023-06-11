@@ -37,7 +37,7 @@ def init_home(app, get_db_conn):
         # Join tables to fetch course data
         query = """
             SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, 
-            p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS, c.id
+            p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS, cas.average_score, c.id
             FROM Course c
             LEFT JOIN CoursePrerequisite cp ON cp.course_id = c.id
             LEFT JOIN Course pr ON pr.id = cp.prerequisite_course_id
@@ -48,6 +48,7 @@ def init_home(app, get_db_conn):
             LEFT JOIN ExamType et ON et.id = cet.exam_type_id
             LEFT JOIN CourseBlock cb ON cb.course_id = c.id
             LEFT JOIN Block b ON b.number = cb.block_number
+            LEFT JOIN CourseAverageScores cas ON cas.course_id = c.id
         """
         query_conditions = []
 
@@ -68,6 +69,7 @@ def init_home(app, get_db_conn):
             selected_ects = request.form.get('ects')
             selected_duration = request.form.get('duration')
             selected_course_name = request.form.get('course_name')
+            selected_min_score = request.form.get('min_score')
             exclude_prerequisite = 'exclude_prerequisite' in request.form
 
 
@@ -90,6 +92,9 @@ def init_home(app, get_db_conn):
 
             if selected_duration and selected_duration != 'None':
                 query_conditions.append(f"c.duration = {selected_duration}")
+
+            if selected_min_score:
+                query_conditions.append(f"cas.average_score >= {selected_min_score}")
 
             # Add a condition for the course name search
             if selected_course_name:
@@ -121,7 +126,7 @@ def init_home(app, get_db_conn):
             query += " WHERE " + " AND ".join(query_conditions)
 
         query += """
-            GROUP BY c.id, b.number, p.name, cr.average_grade, et.name
+            GROUP BY c.id, b.number, p.name, cr.average_grade, et.name, c.ECTS, cas.average_score
         """
 
         curs.execute(query, params)
