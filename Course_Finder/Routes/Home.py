@@ -123,6 +123,7 @@ def init_home(app, get_db_conn):
                     if exclude_prerequisite:
                         prerequisite_condition = "NOT " + prerequisite_condition
                     prerequisite_conditions.append(prerequisite_condition)
+                # join the prerequisite_conditions with OR and add them to the query_conditions as a single condition
                 query_conditions.append("(" + " OR ".join(prerequisite_conditions) + ")")
 
         # query_conditions is not empty then add WHERE + query conditions joined by AND  
