@@ -57,12 +57,6 @@ def init_home(app, get_db_conn):
         if 'selected_prerequisites' not in session or not session['selected_prerequisites']:
             session['selected_prerequisites'] = []
 
-        # Handle filtering form submission
-        # Retrieve filtering criteria from the request object
-        # Construct the SQL query with the filtering conditions
-        # Execute the query and fetch the filtered data
-        # Assign the filtered data to a variable for rendering
-
         # init params as an empty list
         params = []
         # if request is post then get the selected values from the form
