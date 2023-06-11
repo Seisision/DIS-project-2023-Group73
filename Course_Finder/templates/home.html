@@ -49,6 +49,9 @@
             <form action="{{ url_for('logout') }}" method="POST">
                 <button type="submit">Logout</button>
             </form>
+            <form action="{{ url_for('my_reviews') }}" method="GET">
+                <button type="submit">My Reviews</button>
+            </form>
         {% else %}
             <form action="/login" method="GET">
                 <button type="submit">Login</button>
@@ -62,7 +65,7 @@
             </form>
             <form action="{{ url_for('completed_courses') }}" method="GET" style="display: inline;">
                 <button type="submit">Completed Courses</button>
-            </form>            
+            </form>       
         {% endif %}
     </div>
     <div class="filterForm">

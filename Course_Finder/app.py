@@ -46,7 +46,7 @@ def create_app():
         )
 
     # Routes
-    from Routes import Home, View_Review, Write_Review, Login, Register, Completed_Courses
+    from Routes import Home, View_Review, Write_Review, Login, Register, Completed_Courses, My_Reviews
 
     Home.init_home(app, get_db_conn)
     View_Review.init_View_Review(app, get_db_conn)
@@ -55,6 +55,7 @@ def create_app():
     Login.init_logout(app)
     Register.init_register(app, get_db_conn)
     Completed_Courses.init_Completed_Courses(app, get_db_conn)
+    My_Reviews.init_My_Reviews(app, get_db_conn)
 
     return app
 

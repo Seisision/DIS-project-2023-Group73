@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Review</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .review {
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .review h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .review p {
+            margin: 0.5em 0;
+        }
+        .review small {
+            color: #888;
+        }
+        .review textarea {
+            width: 100%; /* Make the text area span the entire width of the .review div */
+            min-height: 200px; /* Set a minimum height so it doesn't appear too small */
+            padding: 5px;
+        }
+        .review select {
+            width: 100%; /* Make the select span the entire width of the .review div */
+            padding: 5px;
+        }
+        .review button {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Review</h1>
+        <form action="{{ url_for('edit_review', review_id=review_id) }}" method="POST">
+            <div class="review">
+                <label for="review">Review Text:</label>
+                <textarea id="review" name="review" required>{{ review[0] }}</textarea>
+                <label for="score">Score:</label>
+                <select id="score" name="score">
+                    <option value="1" {% if review[1] == 1 %}selected{% endif %}>1</option>
+                    <option value="2" {% if review[1] == 2 %}selected{% endif %}>2</option>
+                    <option value="3" {% if review[1] == 3 %}selected{% endif %}>3</option>
+                    <option value="4" {% if review[1] == 4 %}selected{% endif %}>4</option>
+                    <option value="5" {% if review[1] == 5 %}selected{% endif %}>5</option>
+                </select>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
