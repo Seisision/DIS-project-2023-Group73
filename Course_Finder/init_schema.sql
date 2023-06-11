@@ -12,18 +12,17 @@ DELETE FROM Professor;
 DELETE FROM ExamType;
 DELETE FROM Block;
 
-
 INSERT INTO Professor (id, name) VALUES 
 (1, 'Jon Sporring'), 
-(2, 'Rasmus Pagh'), 
-(3, 'Boris'),
+(2, 'Mikkel Abrahamsen'), 
+(3, 'Boris Dudder'),
 (4, 'Kasper Hornbæk'), 
-(5, 'Henrik'), 
-(6, 'Troels'),
-(7, 'Stefan'),
-(8, 'bulat'),
-(9, 'Pawel Destroyer of Grades'),
-(10, 'Dmitriy');
+(5, 'Henrik Granau Holm'), 
+(6, 'Michael Kirkedal Thomsen'),
+(7, 'Stefan Sommer'),
+(8, 'Bulat Ibragimov'),
+(9, 'Pawel Winter'),
+(10, 'Dmitriy Traytel');
 
 INSERT INTO Course (id, duration, ECTS, name) VALUES 
 (1, 2, 15, 'Programmering og problemløsning'),
