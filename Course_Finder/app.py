@@ -24,7 +24,7 @@ def create_app():
     database="postgres"
     user="postgres"
     password="dis"
-    port=1333
+    port=1335
 
     # Database connection
     def get_db_conn():

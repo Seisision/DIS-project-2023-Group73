@@ -91,7 +91,7 @@ def init_My_Reviews(app, get_db_conn):
     @app.route('/delete_review/<int:review_id>', methods=['POST'])
     def delete_review(review_id):
         delete_review_db(review_id, get_db_conn)
-        flash('Review deleted!', 'success')
+        flash('Review deleted!', 'success') # todo - this doesn't work change flash category and handle it properly in the template
         return redirect(url_for('my_reviews'))
 
 

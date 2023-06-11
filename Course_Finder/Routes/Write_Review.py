@@ -7,7 +7,11 @@ def init_Write_Review(app, get_db_conn):
     @app.route('/write_review', methods=['GET', 'POST'])
     def Write_Review():
         conn = get_db_conn()
-        curs = conn.cursor()
+        cur = conn.cursor()
+
+        # Get courses from the database
+        cur.execute("SELECT id, name FROM Course;")
+        courses = cur.fetchall()
 
         # if the request is a POST request, then the user is submitting a review
         if request.method == 'POST':
@@ -15,9 +19,6 @@ def init_Write_Review(app, get_db_conn):
             review_text = request.form['review']
             review_score = request.form['score']
             review_year = datetime.now().year
-            
-            conn = get_db_conn()
-            cur = conn.cursor()
             
             # Insert into the database
             student_id = current_user.id
@@ -30,8 +31,10 @@ def init_Write_Review(app, get_db_conn):
 
             if cur.rowcount == 0:
                 # The student has not completed the course
-                flash('You have not completed the course you are trying to review. You can add courses to your completed list under "Completed Courses" on the home page."', 'Not_Completed_Course')
-                return redirect(url_for('Write_Review'))
+                cur.close()
+                conn.close()
+                error_message = 'You have not completed the course you are trying to review. You can add courses to your completed list under "Completed Courses" on the home page.'
+                return render_template('Write_Reviews.html', error_message=error_message, courses=courses)
             
             # Check if the user has already reviewed the selected course
             query = """
@@ -45,8 +48,10 @@ def init_Write_Review(app, get_db_conn):
             reviewed = result[0] if result else False
 
             if reviewed:
-                flash('You have already reviewed this course. Please edit your review or delete it under "My reviews"', 'Already_Completed_Course')
-                return redirect(url_for('Write_Review'))
+                cur.close()
+                conn.close()
+                error_message = 'You have already reviewed this course. Please edit your review or delete it under "My reviews"'
+                return render_template('Write_Reviews.html', error_message=error_message, courses=courses)
 
             # Insert the review into the Review table
             query = "INSERT INTO Review (year, score, text, course_id) VALUES (%s, %s, %s, %s) RETURNING id;"
@@ -60,15 +65,11 @@ def init_Write_Review(app, get_db_conn):
             conn.commit()
             cur.close()
             conn.close()
-            flash('Review submitted!', 'review_success')
-            return redirect(url_for('Write_Review'))
+            error_message="Your review has been submitted"
+            return render_template('Write_Reviews.html', error_message=error_message, courses=courses)
+
         
         else: # else the request is a GET request, so the user is just viewing the page
-            # Get courses from the database and pass them to the template
-            conn = get_db_conn()
-            cur = conn.cursor()
-            cur.execute("SELECT id, name FROM Course;")
-            courses = cur.fetchall()
             cur.close()
             conn.close()
             return render_template('Write_Reviews.html', courses=courses) 

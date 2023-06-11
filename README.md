@@ -6,18 +6,19 @@ Block, Professor, Exam Type, Minimum average grade, Minimum average review score
 
 You can see reviews of courses and write reviews of courses.
 
+(assumes a working python and pip)
 
 # running the course-finder project
 
 (1) Install the dependencies like below:
 >$ pip install -r requirements.txt
 
-(2) Set up your database by running the relevant SQL files (schema.sql followed by init_schema.sql)
+(2) Set up your database by running the relevant SQL files (schema.sql followed by init_schema.sql). schema creates the tables and init populates them with test data.
 
 
 (3) In app.py on lines 22-27 set your own database settings (ip,database,user,password,port).
 
-(4) Run
+(4) Run the webapp using the following
 >$ python Course_Finder/app.py
 
 

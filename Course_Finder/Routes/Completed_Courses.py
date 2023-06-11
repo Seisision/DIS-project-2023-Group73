@@ -48,7 +48,7 @@ def init_Completed_Courses(app, get_db_conn):
     def delete_completed_course(course_id):
         # Ensure user is logged in
         if not current_user.is_authenticated:
-            flash('You need to be logged in to access this page.', 'danger')
+            flash('You need to be logged in to access this page.', 'danger') # todo - change to flash category to something else and display in completedcourses template
             return redirect(url_for('login'))
 
         # Delete the completed course from the database
