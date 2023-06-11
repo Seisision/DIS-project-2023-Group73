@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import current_user
 
+# Delete a review from the database
 def delete_review_db(review_id, get_db_conn):
     conn = get_db_conn()
     curs = conn.cursor()
@@ -17,7 +18,7 @@ def delete_review_db(review_id, get_db_conn):
     curs.close()
     conn.close()
 
-
+# update a review in the database
 def edit_student_review_db(review_id, new_text, new_score, get_db_conn):
     conn = get_db_conn()
     curs = conn.cursor()
@@ -31,10 +32,10 @@ def edit_student_review_db(review_id, new_text, new_score, get_db_conn):
 
 
 def init_My_Reviews(app, get_db_conn):
+    # This is the code for the My Reviews page
     @app.route('/my_reviews', methods=['GET', 'POST'])
     def my_reviews():
         if request.method == 'POST':
-            # This will be where you handle the deletion or editing of reviews
             review_id = request.form['review_id']
             action = request.form['action']
 
@@ -45,10 +46,10 @@ def init_My_Reviews(app, get_db_conn):
                 new_score = request.form['new_score']
                 edit_student_review_db(review_id, new_text, new_score, get_db_conn)
 
-        # Retrieve all of the current user's reviews
         conn = get_db_conn()
         curs = conn.cursor()
-
+        
+        # Retrieve all of the current user's reviews
         query = """
             SELECT Review.id, Review.year, Review.score, Review.text, Course.name 
             FROM Review 
@@ -64,15 +65,19 @@ def init_My_Reviews(app, get_db_conn):
 
         return render_template('my_reviews.html', reviews=reviews)
     
+    # This is the code for the Edit Review page
     @app.route('/edit_review/<int:review_id>', methods=['GET', 'POST'])
     def edit_review(review_id):
+        # if the request is a POST, then the user has submitted the form
         if request.method == 'POST':
+            # update the review in the database
             new_review_text = request.form['review']
             new_review_score = request.form['score']
             edit_student_review_db(review_id, new_review_text, new_review_score, get_db_conn)
-            flash('Review updated!', 'success')
+            flash('Review updated!', 'success') # todo - this doesn't work change flash category and handle it properly in the template
             return redirect(url_for('my_reviews'))
-        else:
+        else: # else, the user is requesting the page
+            # retrieve the review from the database and render
             conn = get_db_conn()
             cur = conn.cursor()
             cur.execute("SELECT text, score FROM Review WHERE id = %s", (review_id,))

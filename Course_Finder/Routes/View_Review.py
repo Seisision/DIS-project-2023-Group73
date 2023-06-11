@@ -1,7 +1,7 @@
 from flask import render_template
 
 def init_View_Review(app, get_db_conn):
-
+    # This is the code for the View Review page
     @app.route('/course_reviews/<int:course_id>')
     def course_reviews(course_id):
         conn = get_db_conn()

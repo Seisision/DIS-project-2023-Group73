@@ -1,14 +1,25 @@
+<!-- This is the template for the home page. It displays the course information in a table. 
+    Along with buttons to get other pages and filtering options. -->
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Course Information</title>
-    <style>
-        body {
+<html> 
+<head> 
+    <title>Course Information</title> 
+    <style> 
+
+        body { 
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             flex-direction: column;
+        }
+
+        .user-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
         .container {
@@ -25,7 +36,7 @@
             padding: 8px;
             border: 1px solid black;
             word-wrap: break-word;
-            max-width: 100px; /* Adjust the max-width to your desired size */
+            max-width: 100px; 
         }
 
         th {
@@ -37,13 +48,14 @@
         }
         
         .filterForm {
-            text-align: center; /* align the form to the center */
-            margin-bottom: 2em; /* provide some space between the form and the table */
+            text-align: center; 
+            margin-bottom: 2em; 
         }
     </style>
 </head>
 <body>
-    <div class="user-panel" style="text-align: center; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center;">
+    <!-- User panel with buttons to other pages and current user-->
+    <div class="user-panel">
         {% if current_user.is_authenticated %}
             <p>Logged in as: {{ current_user.name }}</p>
             <div style="display: flex; justify-content: center;">
@@ -66,10 +78,13 @@
             </form>
         {% endif %}
     </div>
+
+    <!-- filter form with filtering  options-->
     <div class="filterForm">
         <div class="mainFilterForm">
             <h2 style="text-align: center;">Filter Options</h2>
             <form method="POST">
+                <!-- block -->
                 <label for="block">Block:</label>
                 <select name="block" id="block">
                     <option value="">Any</option>
@@ -82,6 +97,7 @@
                     {% endfor %}
                 </select>
                 
+                <!-- professor -->
                 <label for="professor">Professor:</label>
                 <select name="professor" id="professor">
                     <option value="">Any</option>
@@ -94,6 +110,7 @@
                     {% endfor %}
                 </select>
             
+                <!-- exam type -->
                 <label for="exam_type">Exam Type:</label>
                 <select name="exam_type" id="exam_type">
                     <option value="">Any</option>
@@ -106,12 +123,15 @@
                     {% endfor %}
                 </select>
             
+                <!-- grade -->
                 <label for="grade">Minimum Grade:</label>
                 <input type="number" id="grade" name="grade" value="{{ form.get('grade') if form.get('grade') }}">
 
+                <!-- min score -->
                 <label for="min_score">Minimum Avg Review Score:</label>
                 <input type="number" step="0.1" id="min_score" name="min_score" value="{{ form.get('min_score') if form.get('min_score') }}">
             
+                <!-- ects -->
                 <label for="ects">ECTS:</label>
                 <select name="ects" id="ects">
                     <option value="">Any</option>
@@ -124,6 +144,7 @@
                     {% endfor %}
                 </select>
             
+                <!-- duration -->
                 <label for="duration">Duration:</label>
                 <select name="duration" id="duration">
                     <option value="">Any</option>
@@ -136,27 +157,34 @@
                     {% endfor %}
                 </select>
         
+                <!-- search input for course name -->
                 <input type="text" name="course_name" placeholder="Search for a course" value="{{ request.form.get('course_name', '') }}">
                 <input type="submit" value="Search">
             </form>
         </div>
 
+        <!-- prerequisite course selection form -->
         <div class="prerequisiteForm">
             <div style="display: flex; align-items: center; justify-content: center;">
                 <div style="margin-right: 1em;">
+                    <!-- load completed courses from user button -->
                     <form action="{{ url_for('load_completed_courses') }}" method="POST">
                         <input type="submit" value="Load Completed Courses">
                     </form>
                 </div>
+                <!-- add prerequisite course form -->
                 <form action="{{ url_for('prerequisites') }}" method="POST">
                     <label for="prerequisite" style="margin-left: 1em; margin-right: 1em;">Prerequisite:</label>
+                    <!-- select prerequisite course from dropdown-->
                     <select name="prerequisite" id="prerequisite">
                         <option value="">Any</option>
                         {% for prerequisite in prerequisites %}
                             <option value="{{ prerequisite }}">{{ prerequisite }}</option>
                         {% endfor %}
                     </select>
+                    <!-- add prerequisite course button -->
                     <input type="submit" name="action" value="Add">
+                    <!-- exclude prerequisite course checkbox -->
                     <label for="exclude_prerequisite" style="margin-left: 1em; margin-right: 1em;">Exclude:</label>
                     <input type="checkbox" id="exclude_prerequisite" name="exclude_prerequisite" {% if form.get('exclude_prerequisite') %}checked{% endif %}>
                 </form>
@@ -180,6 +208,7 @@
         {% endif %}     
         </div>
     </div>
+    <!-- course information table -->
     <div class="container">
         <h1>Course Information</h1>
         <table>
@@ -198,7 +227,9 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- loop through courses -->
                 {% for course in data %}
+                <!-- populate table -->
                 <tr>
                     <td>{{ course[0] }}</td>
                     <td>{{ course[1] }}</td>

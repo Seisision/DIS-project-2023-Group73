@@ -3,22 +3,23 @@ from datetime import datetime
 from flask_login import current_user
 
 def init_Write_Review(app, get_db_conn):
-    
+    # This is the code for the Write Review page
     @app.route('/write_review', methods=['GET', 'POST'])
     def Write_Review():
         conn = get_db_conn()
         curs = conn.cursor()
-        
+
+        # if the request is a POST request, then the user is submitting a review
         if request.method == 'POST':
             course_id = request.form['course']
             review_text = request.form['review']
             review_score = request.form['score']
             review_year = datetime.now().year
             
-            # Insert into the database
             conn = get_db_conn()
             cur = conn.cursor()
             
+            # Insert into the database
             student_id = current_user.id
 
             query = """
@@ -61,7 +62,8 @@ def init_Write_Review(app, get_db_conn):
             conn.close()
             flash('Review submitted!', 'review_success')
             return redirect(url_for('Write_Review'))
-        else:
+        
+        else: # else the request is a GET request, so the user is just viewing the page
             # Get courses from the database and pass them to the template
             conn = get_db_conn()
             cur = conn.cursor()
@@ -69,5 +71,5 @@ def init_Write_Review(app, get_db_conn):
             courses = cur.fetchall()
             cur.close()
             conn.close()
-            return render_template('Write_Reviews.html', courses=courses)
+            return render_template('Write_Reviews.html', courses=courses) 
 

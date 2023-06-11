@@ -1,3 +1,4 @@
+# the student class is a model that represents a student in the database.
 class Student:
     def __init__(self, id=None, username=None, password_hash=None, name=None):
         self.id = id
@@ -21,7 +22,7 @@ class Student:
     def get_id(self):
         return str(self.id)
 
-
+# this function selects a student from the database by their id.
 def select_Student_by_id(id, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
@@ -35,6 +36,7 @@ def select_Student_by_id(id, get_db_conn):
     conn.close()
     return user
 
+# this function selects a student from the database by their username.
 def select_Student_by_username(username, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
@@ -48,6 +50,7 @@ def select_Student_by_username(username, get_db_conn):
     conn.close()
     return user
 
+# this function inserts a student into the database.
 def save_student(student, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
@@ -63,19 +66,21 @@ def save_student(student, get_db_conn):
     conn.close()
     student.id = student_id  # Assign the generated ID to the student object
 
-def select_Course_by_name(name, get_db_conn):
-    conn = get_db_conn()
-    cur = conn.cursor()
-    sql = """
-    SELECT * FROM Course
-    WHERE name = %s
-    """
-    cur.execute(sql, (name,))
-    course = cur.fetchone()
-    cur.close()
-    conn.close()
-    return course
+# # this function selects a course from the database by its name.
+# def select_Course_by_name(name, get_db_conn):
+#     conn = get_db_conn()
+#     cur = conn.cursor()
+#     sql = """
+#     SELECT * FROM Course
+#     WHERE name = %s
+#     """
+#     cur.execute(sql, (name,))
+#     course = cur.fetchone()
+#     cur.close()
+#     conn.close()
+#     return course
 
+# this function selects a course from the database by its id.
 def save_completed_course(student_id, course_id, completion_date, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
@@ -88,6 +93,7 @@ def save_completed_course(student_id, course_id, completion_date, get_db_conn):
     cur.close()
     conn.close()
 
+# this function deletes a completed course from the database by student id.
 def delete_student_completed_course(student_id, course_id, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
@@ -100,6 +106,7 @@ def delete_student_completed_course(student_id, course_id, get_db_conn):
     cur.close()
     conn.close()
 
+# this function gets all complleted courses from the database by student id.
 def get_completed_courses(student_id, get_db_conn):
     conn = get_db_conn()
     cur = conn.cursor()
