@@ -1,8 +1,10 @@
+<!-- This template is used to display the reviews for a course. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Course Reviews</title>
+    <!-- This is the stylesheet for the page -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,6 +16,7 @@
         }
         .review {
             background-color: #f5f5f5;
+            border: 1px solid #ccc;
             border-radius: 5px;
             margin-bottom: 20px;
             padding: 20px;
@@ -33,7 +36,10 @@
 </head>
 <body>
     <div class="container">
+        <!-- Home button -->
+        <a href="/" style="display: inline-block; margin: 10px 0; padding: 10px; background-color: #f5f5f5; text-decoration: none; color: #333; border-radius: 5px;">Home</a>
         <h1>Reviews for {{ course_name }}</h1>
+        <!-- If there are reviews for this course, loop through them and display them -->
         {% if reviews %}
             {% for review in reviews %}
                 <div class="review">

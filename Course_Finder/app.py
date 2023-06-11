@@ -5,37 +5,28 @@ from models import select_Student_by_id
 import psycopg2
 
 def create_app():
-
+    # App settings
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secretkey'
     app.config['SESSION_TYPE'] = 'filesystem'
 
     Session(app)
 
+    # Login settings
     login_manager = LoginManager()
     login_manager.init_app(app) 
     @login_manager.user_loader
     def load_user(user_id):
         return select_Student_by_id(user_id, get_db_conn)
-
-
-    # gamle Database connection settings
+    
+    # Database settings (please enter your own database settings)
     host="127.0.0.1"
-    database="Course Finder"
+    database="postgres"
     user="postgres"
     password="dis"
-    port=5432
+    port=1335
 
-    # Database connection settings til testing (ulrik)
-    # det her er lidt en cringem måde at gøre det på,
-    # men jeg tror de originale settings er gemt ovenfor?
-
-    #host="127.0.0.1"
-    #database="postgres"
-    #user="postgres"
-    #password="dis"
-    #port=1333
-
+    # Database connection
     def get_db_conn():
         return psycopg2.connect(
             host=host, 
@@ -46,7 +37,7 @@ def create_app():
         )
 
     # Routes
-    from Routes import Home, View_Review, Write_Review, Login, Register, Completed_Courses
+    from Routes import Home, View_Review, Write_Review, Login, Register, Completed_Courses, My_Reviews
 
     Home.init_home(app, get_db_conn)
     View_Review.init_View_Review(app, get_db_conn)
@@ -55,6 +46,7 @@ def create_app():
     Login.init_logout(app)
     Register.init_register(app, get_db_conn)
     Completed_Courses.init_Completed_Courses(app, get_db_conn)
+    My_Reviews.init_My_Reviews(app, get_db_conn)
 
     return app
 

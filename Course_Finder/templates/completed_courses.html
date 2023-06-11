@@ -1,15 +1,19 @@
+<!-- This page is used to register completed courses and to view all completed courses from a user. -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Completed Courses</title>
 </head>
 <body>
+    <!-- This is the home button -->
+    <a href="/" style="display: inline-block; margin: 10px 0; padding: 10px; background-color: #f5f5f5; text-decoration: none; color: #333; border-radius: 5px;">Home</a>
     <h1>Completed Courses</h1>
-    
+    <!-- This is the form to register a completed course -->
     {% if current_user.is_authenticated %}
         <form action="{{ url_for('completed_courses') }}" method="POST">
             {{ form.hidden_tag() }}
-
+            
+            <!-- This is the dropdown menu to select a course -->
             <label for="course">Select Course:</label>
             <select id="course" name="course_id">
                 {% for course in courses %}
@@ -17,18 +21,21 @@
                 {% endfor %}
             </select>
 
+            <!-- This is the date input to select a completion date -->
             <label for="completion_date">Completion Date:</label>
             <input type="date" name="completion_date" required>
 
+            <!-- This is the submit button -->
             <input type="submit" name="action" value="Register Completed Course">
         </form>
-
+        <!-- This is the table to view all completed courses -->
         {% if completed_courses %}
             <table>
                 <thead>
                     <tr>
                         <th>Course Name</th>
                         <th>Completion Date</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,10 +43,17 @@
                         <tr>
                             <td>{{ course[0] }}</td> 
                             <td>{{ course[1] }}</td> 
+                            <td>
+                                <form action="{{ url_for('delete_completed_course', course_id=course[2]) }}" method="POST">
+                                    {{ form.hidden_tag() }}
+                                    <input type="submit" value="Delete">
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        <!-- If there are no completed courses, display this message -->
         {% else %}
             <p>No completed courses registered yet.</p>
         {% endif %}
