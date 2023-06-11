@@ -1,3 +1,4 @@
+<!-- This page is used to write reviews for courses. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,29 +6,47 @@
     <title>Write Review</title>
 </head>
 <body>
+<!-- Home button-->
+<a href="/" style="display: inline-block; margin: 10px 0; padding: 10px; background-color: #f5f5f5; text-decoration: none; color: #333; border-radius: 5px;">Home</a>
+<!-- If there are any errors display them -->
+{% if error_message %}
+    <p>{{ error_message }}</p>
+{% endif %}
 
-<form action="{{ url_for('Write_Review') }}" method="post">
-    <label for="course">Select Course:</label>
-    <select id="course" name="course">
-        {% for course in courses %}
-            <option value="{{ course[0] }}">{{ course[1] }}</option>
-        {% endfor %}
-    </select>
+{% if not reviewed_course %}
+    <form action="{{ url_for('Write_Review') }}" method="post">
+        <label for="course">Select Course:</label>
+        <select id="course" name="course">
+            {% for course in courses %}
+                <option value="{{ course[0] }}">{{ course[1] }}</option>
+            {% endfor %}
+        </select>
 
-    <label for="score">Select Score:</label>
-    <select id="score" name="score">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    
-    <label for="review">Write your review:</label><br>
-    <textarea id="review" name="review" rows="4" cols="50"></textarea><br>
-    
-    <input type="submit" value="Submit">
-</form>
-
+        <label for="score">Select Score:</label>
+        <select id="score" name="score">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        
+        <label for="review">Write your review:</label><br>
+        <textarea id="review" name="review" rows="4" cols="50"></textarea><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+    {% else %}
+        <h2>You have already reviewed this course.</h2>
+        <p>Your Review:</p>
+        <p>{{ reviewed_course.text }}</p>
+        <p>Score: {{ reviewed_course.score }}</p>
+        <form action="{{ url_for('Edit_Review', review_id=reviewed_course.id) }}" method="post">
+            <input type="submit" value="Edit Review">
+        </form>
+        <form action="{{ url_for('Delete_Review', review_id=reviewed_course.id) }}" method="post">
+            <input type="submit" value="Delete Review">
+        </form>
+    {% endif %}
 </body>
 </html>
