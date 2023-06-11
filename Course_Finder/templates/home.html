@@ -133,7 +133,8 @@
                     {% endfor %}
                 </select>
         
-                <input type="submit" value="Filter">
+                <input type="text" name="course_name" placeholder="Search for a course" value="{{ request.form.get('course_name', '') }}">
+                <input type="submit" value="Search">
             </form>
         </div>
 
@@ -173,11 +174,7 @@
                     </li>
                 {% endfor %}
             </ul>
-        {% endif %}
-            <form method="POST">
-                <input type="text" name="course_name" placeholder="Search for a course" value="{{ request.form.get('course_name', '') }}">
-                <input type="submit" value="Search">
-            </form>        
+        {% endif %}     
         </div>
     </div>
     <div class="container">
