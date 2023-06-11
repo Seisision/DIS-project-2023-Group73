@@ -42,3 +42,5 @@ Upon successful login, users have access to additional features:
 ## Review Viewing
 
 Within the course information table on the homepage, the 'View Reviews' button redirects users to a page displaying all reviews of the respective course.
+
+![](ER_diagram.png)
