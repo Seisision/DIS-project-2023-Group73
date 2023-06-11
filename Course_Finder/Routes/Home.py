@@ -41,7 +41,7 @@ def init_home(app, get_db_conn):
             FROM Course c
             LEFT JOIN CoursePrerequisite cp ON cp.course_id = c.id
             LEFT JOIN Course pr ON pr.id = cp.prerequisite_course_id
-            LEFT JOIN Staff s ON s.course_id = c.id
+            LEFT JOIN CourseProfessor s ON s.course_id = c.id
             LEFT JOIN Professor p ON p.id = s.professor_id
             LEFT JOIN CourseResult cr ON cr.course_id = c.id
             LEFT JOIN CourseExamType cet ON cet.course_id = c.id
@@ -101,6 +101,7 @@ def init_home(app, get_db_conn):
             exclude_prerequisite = 'exclude_prerequisite' in request.form
 
             # If selected_prerequisites is not empty
+            prerequisite_conditions = []
             if selected_prerequisites:
                 for prerequisite in selected_prerequisites:
                     prerequisite_condition = """
@@ -113,7 +114,8 @@ def init_home(app, get_db_conn):
                     """ % prerequisite
                     if exclude_prerequisite:
                         prerequisite_condition = "NOT " + prerequisite_condition
-                    query_conditions.append(prerequisite_condition)
+                    prerequisite_conditions.append(prerequisite_condition)
+                query_conditions.append("(" + " OR ".join(prerequisite_conditions) + ")")
                     
         if query_conditions:
             query += " WHERE " + " AND ".join(query_conditions)

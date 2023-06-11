@@ -3,11 +3,6 @@ CREATE TABLE Professor (
     name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Role (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
-
 CREATE TABLE Course (
     id SERIAL PRIMARY KEY,
     duration INT NOT NULL,
@@ -59,13 +54,11 @@ CREATE TABLE CourseResult (
     FOREIGN KEY (course_id) REFERENCES Course(id) 
 );
 
-CREATE TABLE Staff (
+CREATE TABLE CourseProfessor (
     professor_id INT NOT NULL,
-    role_id INT NOT NULL,
     course_id INT NOT NULL,
-    PRIMARY KEY (professor_id, role_id, course_id),
+    PRIMARY KEY (professor_id, course_id),
     FOREIGN KEY (professor_id) REFERENCES Professor(id),
-    FOREIGN KEY (role_id) REFERENCES Role(id),
     FOREIGN KEY (course_id) REFERENCES Course(id)
 );
 

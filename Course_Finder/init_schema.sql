@@ -11,7 +11,6 @@ DELETE FROM Student;
 DELETE FROM Review;
 DELETE FROM CoursePrerequisite;
 DELETE FROM Course;
-DELETE FROM Role;
 DELETE FROM Professor;
 DELETE FROM CompletedCourses;
 -- Now insert data
@@ -28,15 +27,6 @@ INSERT INTO Professor (id, name) VALUES
 (8, 'bulat'),
 (9, 'Pawel Destroyer of Grades'),
 (10, 'Dmitriy');
-
--- Insert roles
-INSERT INTO Role (id, name) VALUES 
-(1, 'Lecturer'), 
-(2, 'Assistant'), 
-(3, 'Adjunct'),
-(4, 'Professor'), 
-(5, 'Assistant'), 
-(6, 'Lecturer');
 
 INSERT INTO Course (id, duration, ECTS, name) VALUES 
 (1, 2, 15, 'Programmering og problemløsning'),
@@ -125,17 +115,17 @@ INSERT INTO CourseResult (id, average_grade, year, course_id) VALUES
 (10, 7, 2023, 10);
 
 -- Staff
-INSERT INTO Staff (professor_id, role_id, course_id) VALUES 
-(1, 1, 1),
-(2, 1, 2),
-(3, 2, 3),
-(4, 2, 4),
-(5, 3, 5),
-(6, 3, 6),
-(7, 3, 7),
-(8, 3, 8),
-(9, 3, 9),
-(10, 3, 10);
+INSERT INTO CourseProfessor (professor_id, course_id) VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
 
 -- CourseExamType
 INSERT INTO CourseExamType (course_id, exam_type_id) VALUES 
