@@ -3,7 +3,9 @@ Repository for the group project for the DIS 2023 course. The project is  web-ap
 
 Group members:
 Seisision: Ulrik Holdgaard Lund Pedersen (qsr167) 
+
 petertmikkelsen: Peter Tveskov Mikkelsen (tdb457)
+
 ActualNigerianPrince: Oskar Babatunde Adeayo Rønnest Adebusuyi (kfm415)
 
 Search courses by: 
