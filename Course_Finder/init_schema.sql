@@ -1,7 +1,6 @@
 DELETE FROM StudentReview;
 DELETE FROM CourseBlock;
 DELETE FROM CourseExamType;
-DELETE FROM Staff;
 DELETE FROM CourseResult;
 DELETE FROM ExamType;
 DELETE FROM Block;
