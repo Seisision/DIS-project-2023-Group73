@@ -21,7 +21,7 @@ INSERT INTO Professor (id, name) VALUES
 (6, 'Michael Kirkedal Thomsen'),
 (7, 'Stefan Sommer'),
 (8, 'Bulat Ibragimov'),
-(9, 'Pawel Winter'),
+(9, 'Rasmus Pagh'),
 (10, 'Dmitriy Traytel');
 
 INSERT INTO Course (id, duration, ECTS, name) VALUES 
@@ -39,14 +39,20 @@ INSERT INTO Course (id, duration, ECTS, name) VALUES
 
 INSERT INTO CoursePrerequisite (course_id, prerequisite_course_id) VALUES
 (3, 1),
+(4, 1),
 (5, 1),
 (5, 2),
-(6, 2), 
+(6, 1),
+(6, 2),
+(6, 3),
+(7, 1), 
+(7, 2),
+(7, 5),
 (8, 7),
 (8, 5),
 (9, 2),
 (10, 6),
-(10, 4);
+(10, 1);
 
 INSERT INTO Student (id, username, password_hash, name) VALUES 
 (1, 'student_a', 'password_hash_value', 'Student A'),
@@ -94,14 +100,14 @@ INSERT INTO ExamType (id, name) VALUES
 INSERT INTO CourseResult (id, average_grade, year, course_id) VALUES 
 (1, NULL, 2023, 1),
 (2, NULL, 2023, 2),
-(3, 7, 2023, 3),
-(4, 10, 2023, 4),
-(5, 5, 2023, 5),
-(6, 6, 2023, 6),
-(7, 5, 2023, 7),
-(8, 5, 2023, 8),
-(9, 3, 2023, 9),
-(10, 7, 2023, 10);
+(3, 8.5, 2023, 3),
+(4, 7, 2023, 4),
+(5, 5.2, 2023, 5),
+(6, 4.9, 2023, 6),
+(7, 3.5, 2023, 7),
+(8, 6.7, 2023, 8),
+(9, 3.6, 2023, 9),
+(10, 6.3, 2023, 10);
 
 INSERT INTO CourseProfessor (professor_id, course_id) VALUES 
 (1, 1),
