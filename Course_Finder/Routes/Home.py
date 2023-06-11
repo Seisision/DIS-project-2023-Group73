@@ -9,7 +9,6 @@ def init_home(app, get_db_conn):
         curs = conn.cursor()
 
         session.setdefault('selected_prerequisites', [])
-        print(f"Home route: Selected prerequisites session: {session.get('selected_prerequisites', [])}")
 
         # Fetch blocks
         curs.execute("SELECT DISTINCT number FROM Block ORDER BY number")
@@ -37,7 +36,8 @@ def init_home(app, get_db_conn):
 
         # Join tables to fetch course data
         query = """
-            SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS, c.id
+            SELECT c.name, b.number AS block, c.duration, array_agg(pr.name) AS prerequisites, 
+            p.name AS professor, cr.average_grade, et.name AS exam_type, c.ECTS, c.id
             FROM Course c
             LEFT JOIN CoursePrerequisite cp ON cp.course_id = c.id
             LEFT JOIN Course pr ON pr.id = cp.prerequisite_course_id
@@ -128,8 +128,6 @@ def init_home(app, get_db_conn):
         data = curs.fetchall()
         conn.close()
 
-        print(f"Home route: Selected prerequisites session: {session['selected_prerequisites']}")
-
         return render_template(
             'home.html', 
             data=data, 
@@ -152,20 +150,15 @@ def init_home(app, get_db_conn):
         print("Received action: ", action)
 
         if selected_prerequisite != '' and selected_prerequisite is not None:
-            print("Selected prerequisite is non-empty and not None.")
-            if action == 'Add':  # change 'add' to 'Add'
+            if action == 'Add': 
                 print("Adding prerequisite...")
                 if 'selected_prerequisites' not in session:
-                    print("Session['selected_prerequisites'] does not exist, creating...")
                     session['selected_prerequisites'] = [selected_prerequisite]
                 else:
-                    print("Session['selected_prerequisites'] exists, appending...")
                     session['selected_prerequisites'].append(selected_prerequisite)
-                print("Added prerequisite, session is now: ", session['selected_prerequisites'])
-            elif action == 'Remove' and 'selected_prerequisites' in session:  # change 'remove' to 'Remove'
+            elif action == 'Remove' and 'selected_prerequisites' in session:  
                 if selected_prerequisite in session['selected_prerequisites']:
                     session['selected_prerequisites'].remove(selected_prerequisite)
-                print("Removed prerequisite, session is now: ", session['selected_prerequisites'])
         else:
             print("Selected prerequisite is empty or None.")
 

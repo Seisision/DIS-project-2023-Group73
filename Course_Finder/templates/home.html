@@ -43,33 +43,32 @@
     </style>
 </head>
 <body>
-    <div class="user-panel" style="text-align: center; margin-bottom: 20px;">
+    <div class="user-panel" style="text-align: center; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center;">
         {% if current_user.is_authenticated %}
             <p>Logged in as: {{ current_user.username }}</p>
-            <form action="{{ url_for('logout') }}" method="POST">
-                <button type="submit">Logout</button>
-            </form>
-            <form action="{{ url_for('my_reviews') }}" method="GET">
-                <button type="submit">My Reviews</button>
-            </form>
+            <div style="display: flex; justify-content: center;">
+                <form action="{{ url_for('logout') }}" method="POST" style="margin-right: 10px;">
+                    <button type="submit">Logout</button>
+                </form>
+                <form action="{{ url_for('my_reviews') }}" method="GET" style="margin-right: 10px;">
+                    <button type="submit">My Reviews</button>
+                </form>
+                <form action="{{ url_for('Write_Review') }}" method="GET" style="margin-right: 10px;">
+                    <button type="submit">Write a Review</button>
+                </form>
+                <form action="{{ url_for('completed_courses') }}" method="GET" style="display: inline;">
+                    <button type="submit">Completed Courses</button>
+                </form>
+            </div>   
         {% else %}
-            <form action="/login" method="GET">
+            <form action="/login" method="GET" style="margin-right: 10px;">
                 <button type="submit">Login</button>
             </form>
         {% endif %}
     </div>
-    <div class="write-review-button" style="text-align: center; margin-bottom: 20px;">
-        {% if current_user.is_authenticated %}
-            <form action="{{ url_for('Write_Review') }}" method="GET">
-                <button type="submit">Write a Review</button>
-            </form>
-            <form action="{{ url_for('completed_courses') }}" method="GET" style="display: inline;">
-                <button type="submit">Completed Courses</button>
-            </form>       
-        {% endif %}
-    </div>
     <div class="filterForm">
         <div class="mainFilterForm">
+            <h2 style="text-align: center;">Filter Options</h2>
             <form method="POST">
                 <label for="block">Block:</label>
                 <select name="block" id="block">
