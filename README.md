@@ -6,7 +6,7 @@ Block, Professor, Exam Type, Minimum average grade, Minimum average review score
 
 You can see reviews of courses and write reviews of courses.
 
-#Group members:
+# Group members:
 Seisision: Ulrik Holdgaard Lund Pedersen (qsr167) 
 
 petertmikkelsen: Peter Tveskov Mikkelsen (tdb457)
