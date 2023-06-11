@@ -1,15 +1,17 @@
 DELETE FROM StudentReview;
+DELETE FROM CompletedCourses;
 DELETE FROM CourseBlock;
 DELETE FROM CourseExamType;
 DELETE FROM CourseResult;
-DELETE FROM ExamType;
-DELETE FROM Block;
-DELETE FROM Student;
-DELETE FROM Review;
 DELETE FROM CoursePrerequisite;
+DELETE FROM Review;
+DELETE FROM CourseProfessor;
+DELETE FROM Student;
 DELETE FROM Course;
 DELETE FROM Professor;
-DELETE FROM CompletedCourses;
+DELETE FROM ExamType;
+DELETE FROM Block;
+
 
 INSERT INTO Professor (id, name) VALUES 
 (1, 'Jon Sporring'), 
