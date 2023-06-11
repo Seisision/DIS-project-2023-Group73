@@ -6,26 +6,32 @@
     <title>Course Information</title> 
     <style> 
 
-        body { 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
+body { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
 
-        .user-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+.user-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
-        .container {
-            width: 80%;
-            text-align: center;
-        }
+.container {
+    width: 80%;
+    text-align: center;
+    /* display: flex;
+    max-height: 80vh;
+    overflow: auto; */
+}
 
         table {
             width: 100%;
@@ -55,6 +61,7 @@
 </head>
 <body>
     <!-- User panel with buttons to other pages and current user-->
+<div>
     <div class="user-panel">
         {% if current_user.is_authenticated %}
             <p>Logged in as: {{ current_user.name }}</p>
@@ -272,6 +279,7 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>    
+    </div>
+</div>    
 </body>
 </html>
