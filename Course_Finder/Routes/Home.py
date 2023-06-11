@@ -69,7 +69,6 @@ def init_home(app, get_db_conn):
             selected_duration = request.form.get('duration')
             selected_course_name = request.form.get('course_name')
             selected_min_score = request.form.get('min_score')
-            exclude_prerequisite = 'exclude_prerequisite' in request.form
 
             session.modified = True  # This line is needed because mutable session data might not trigger a save
 
@@ -103,9 +102,6 @@ def init_home(app, get_db_conn):
             # get the selected prerequisites from the existing session
             selected_prerequisites = session.get('selected_prerequisites', [])
 
-            # this might not be needed
-            exclude_prerequisite = 'exclude_prerequisite' in request.form
-
             # init prerequisite_conditions as an empty list
             prerequisite_conditions = []
 
@@ -120,8 +116,6 @@ def init_home(app, get_db_conn):
                         WHERE cp.course_id = c.id AND pr.name = '%s'
                     )
                     """ % prerequisite
-                    if exclude_prerequisite:
-                        prerequisite_condition = "NOT " + prerequisite_condition
                     prerequisite_conditions.append(prerequisite_condition)
                 # join the prerequisite_conditions with OR and add them to the query_conditions as a single condition
                 query_conditions.append("(" + " OR ".join(prerequisite_conditions) + ")")
