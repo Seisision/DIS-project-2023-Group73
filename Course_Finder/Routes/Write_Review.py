@@ -29,7 +29,8 @@ def init_Write_Review(app, get_db_conn):
 
             if cur.rowcount == 0:
                 # The student has not completed the course
-                return 'You can only review courses you have completed.'
+                flash('You have not completed the course you are trying to review. You can add courses to your completed list under "Completed Courses" on the home page."', 'Not_Completed_Course')
+                return redirect(url_for('Write_Review'))
             
             # Check if the user has already reviewed the selected course
             query = """
@@ -43,8 +44,7 @@ def init_Write_Review(app, get_db_conn):
             reviewed = result[0] if result else False
 
             if reviewed:
-                flash('You have already reviewed this course. Please edit your review or delete it under "My reviews"', 'warning')
-                print('You have already reviewed this course.')
+                flash('You have already reviewed this course. Please edit your review or delete it under "My reviews"', 'Already_Completed_Course')
                 return redirect(url_for('Write_Review'))
 
             # Insert the review into the Review table
@@ -59,8 +59,8 @@ def init_Write_Review(app, get_db_conn):
             conn.commit()
             cur.close()
             conn.close()
-            
-            return 'Review submitted!'
+            flash('Review submitted!', 'review_success')
+            return redirect(url_for('Write_Review'))
         else:
             # Get courses from the database and pass them to the template
             conn = get_db_conn()
