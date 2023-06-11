@@ -1,21 +1,20 @@
 # DIS-project-2023-Group73
 Repository for the group project for the DIS 2023 course. The project is  web-app (website) that interacts with a database.
 
-Group members:
+Search courses by: 
+Block, Professor, Exam Type, Minimum average grade, Minimum average review score, ECTS points, Duration, Course names, Prerequisite courses.
+
+You can see reviews of courses and write reviews of courses.
+
+#Group members:
 Seisision: Ulrik Holdgaard Lund Pedersen (qsr167) 
 
 petertmikkelsen: Peter Tveskov Mikkelsen (tdb457)
 
 ActualNigerianPrince: Oskar Babatunde Adeayo Rønnest Adebusuyi (kfm415)
 
-Search courses by: 
-Block, Professor, Exam Type, Minimum average grade, Minimum average review score, ECTS points, Duration, Course names, Prerequisite courses.
-
-You can see reviews of courses and write reviews of courses.
-
-(assumes a working python and pip)
-
 # running the course-finder project
+(assumes a working python and pip)
 
 (1) Install the dependencies like below:
 >$ pip install -r requirements.txt
